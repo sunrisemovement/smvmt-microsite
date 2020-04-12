@@ -7,18 +7,19 @@ import './global.css'
 const Container = styled.div`
   display: flex;
   flex-direction: row;
-  width: '100%';
+  width: 100%;
   background-color: var(--sunrise-grey);
-  height: 110px;
+  height: inherit;
   align-items: center;
+  padding-top: 25px;
+  padding-bottom: 25px;
 `;
 
 const Logo = styled.div`
   padding-top: 3px;
   height: 30px;
   width: 18px;
-  margin-left: 120px;
-  margin-right: 8px;
+  margin-left: 8%;
 `;
 
 const Title = styled.div`
@@ -27,6 +28,7 @@ const Title = styled.div`
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 700;
   font-style: bold;
+  padding-left: 8px;
   color: var(--sunrise-yellow);
 `;
 
