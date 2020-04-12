@@ -2,11 +2,13 @@ import React from "react"
 import SunriseLogo from "./SunriseLogo"
 import styled from 'styled-components';
 
+import './global.css'
+
 const Container = styled.div`
   display: flex;
   flex-direction: row;
   width: '100%';
-  background-color: #33342E;
+  background-color: var(--sunrise-grey);
   height: 110px;
   align-items: center;
 `;
@@ -25,7 +27,7 @@ const Title = styled.div`
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 700;
   font-style: bold;
-  color: #FFDE16;
+  color: var(--sunrise-yellow);
 `;
 
 function SunriseHeader(props) {
