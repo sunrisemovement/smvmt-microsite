@@ -10,9 +10,21 @@ import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
 
 import SunriseHeader from "./SunriseHeader"
+import SunriseFooter from "./SunriseFooter"
+import styled from 'styled-components';
 import "./layout.css"
 
-const Layout = ({ children }) => {
+const LayoutContainer = styled.div`
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+`;
+
+const Content = styled.div`
+  flex-grow: 1;
+`;
+
+function Layout(props) {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -23,29 +35,18 @@ const Layout = ({ children }) => {
     }
   `)
 
-  return (
-    <>
-      <SunriseHeader />
-      <div
-        style={{
-          margin: `0 auto`,
-          maxWidth: 960,
-          padding: `0 1.0875rem 1.45rem`,
-        }}
-      >
-        <main>{children}</main>
-        <footer>
-          © {new Date().getFullYear()}, Built with
-          {` `}
-          <a href="https://www.gatsbyjs.org">Gatsby</a>
-        </footer>
-      </div>
-    </>
-  )
-}
+  const socialMediaMap = new Map();
+  {/* TO-DO: use info from config to build this map */}
+  socialMediaMap.set('instagram', 'https://www.instagram.com/sunrisemvmt/');
+  socialMediaMap.set('email', 'mailto:team@sunrisemovement.org');
 
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
+  return (
+    <LayoutContainer>
+      <SunriseHeader />
+      <Content>{props.children}</Content>
+      <SunriseFooter socialMediaMap={socialMediaMap}/>
+    </LayoutContainer>
+  )
 }
 
 export default Layout
