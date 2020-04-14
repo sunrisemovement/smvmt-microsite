@@ -11,6 +11,7 @@ const Container = styled.div`
   background-color: var(--sunrise-grey);
   height: inherit;
   align-items: center;
+  padding-left: 8%;
   padding-top: 25px;
   padding-bottom: 25px;
 `;
@@ -19,7 +20,6 @@ const Logo = styled.div`
   padding-top: 3px;
   height: 30px;
   width: 18px;
-  margin-left: 8%;
 `;
 
 const Title = styled.div`
