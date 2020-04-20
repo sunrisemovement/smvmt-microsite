@@ -2,7 +2,7 @@ import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import Img from "gatsby-image"
 
-const Instagram = () => {
+const SocialMediaImage = () => {
   const data = useStaticQuery(graphql`
     query {
       instagram: file(relativePath: { eq: "instagram.png" }) {
@@ -19,13 +19,6 @@ const Instagram = () => {
           }
         }
       }
-      facebook: file(relativePath: { eq: "facebook.png" }) {
-        childImageSharp {
-          fluid(maxWidth: 100, quality: 100) {
-              ...GatsbyImageSharpFluid
-          }
-        }
-      }
     }
   `)
 
@@ -35,4 +28,4 @@ const Instagram = () => {
   };
 }
 
-export default Instagram
+export default SocialMediaImage
