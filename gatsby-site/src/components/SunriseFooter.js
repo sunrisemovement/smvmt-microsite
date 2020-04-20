@@ -62,7 +62,7 @@ function FooterSocialLinks(props) {
   for (const [socialMediaType, link] of socialMediaMap.entries()) {
     socialMediaComponents.push(
       <a href={link} key={socialMediaType}>
-        <ImageCircle>
+        <ImageCircle 
           <ImageStyle>
             {socialMediaImages[socialMediaType]}
           </ImageStyle>
