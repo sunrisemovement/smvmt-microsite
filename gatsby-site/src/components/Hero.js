@@ -1,10 +1,8 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { css } from "styled-components"
-import photoPlaceholderPath from "../images/photo-placeholder.svg"
-import sunriseLogoPath from "../images/sunrise-logo.png"
 
-const Hero = ({ dense }) => {
+const Hero = ({ dense, background, hubLogo, hubName, hubWebsite }) => {
   return (
     <section
       css={css`
@@ -12,7 +10,7 @@ const Hero = ({ dense }) => {
         overflow: hidden;
       `}>
       <img
-        src={photoPlaceholderPath}
+        src={background}
         css={css`
           position: absolute;
           top: 0;
@@ -48,7 +46,7 @@ const Hero = ({ dense }) => {
             margin-bottom: 16px;
           `}>
           <img
-            src={sunriseLogoPath}
+            src={hubLogo}
             css={css`
               width: 32.5%;
             `}
@@ -65,10 +63,10 @@ const Hero = ({ dense }) => {
             margin: 0;
             margin-bottom: 32px;
           `}>
-          Sunrise Movement PDX
+          Sunrise Movement {hubName}
         </h1>
         <a
-          href="https://www.sunrisepdx.org"
+          href={hubWebsite}
           css={css`
             font-family: Source Sans Pro;
             font-style: normal;
@@ -86,7 +84,7 @@ const Hero = ({ dense }) => {
             align-items: center;
             padding: 0 40px;
           `}>
-          Visit Sunrise pdx’s full website
+          Visit Sunrise {hubName}’s full website
         </a>
       </div>
     </section>
@@ -95,6 +93,10 @@ const Hero = ({ dense }) => {
 
 Hero.propTypes = {
   dense: PropTypes.bool,
+  background: PropTypes.string.isRequired,
+  hubLogo: PropTypes.string.isRequired,
+  hubName: PropTypes.string.isRequired,
+  hubWebsite: PropTypes.string.isRequired,
 }
 
 Hero.defaultProps = {
