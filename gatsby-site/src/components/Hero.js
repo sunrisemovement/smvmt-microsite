@@ -1,9 +1,10 @@
 import React from "react"
+import PropTypes from "prop-types"
 import { css } from "styled-components"
 import photoPlaceholderPath from "../images/photo-placeholder.svg"
 import sunriseLogoPath from "../images/sunrise-logo.png"
 
-const Hero = () => {
+const Hero = ({ dense }) => {
   return (
     <section
       css={css`
@@ -28,7 +29,7 @@ const Hero = () => {
           position: relative;
           z-index: 2;
           background-color: rgba(0, 0, 0, 0.5);
-          padding: 60px 32px 108px;
+          padding: ${dense ? "60px 32px 108px" : "190px 32px 354px"};
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -90,6 +91,14 @@ const Hero = () => {
       </div>
     </section>
   )
+}
+
+Hero.propTypes = {
+  dense: PropTypes.bool,
+}
+
+Hero.defaultProps = {
+  dense: false,
 }
 
 export default Hero

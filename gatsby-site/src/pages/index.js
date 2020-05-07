@@ -4,7 +4,7 @@ import Hero from "../components/Hero"
 
 const IndexPage = () => (
   <Layout>
-    <Hero />
+    <Hero dense />
   </Layout>
 )
 
