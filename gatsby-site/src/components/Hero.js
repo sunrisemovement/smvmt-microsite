@@ -61,31 +61,33 @@ const Hero = ({ dense, background, hubLogo, hubName, hubWebsite }) => {
             text-transform: uppercase;
             color: var(--sunrise-yellow);
             margin: 0;
-            margin-bottom: 32px;
           `}>
           Sunrise Movement {hubName}
         </h1>
-        <a
-          href={hubWebsite}
-          css={css`
-            font-family: Source Sans Pro;
-            font-style: normal;
-            font-weight: bold;
-            font-size: 16px;
-            line-height: 20px;
-            text-align: center;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            color: var(--sunrise-gray);
-            text-decoration: none;
-            height: 68px;
-            background-color: var(--sunrise-yellow);
-            display: flex;
-            align-items: center;
-            padding: 0 40px;
-          `}>
-          Visit Sunrise {hubName}’s full website
-        </a>
+        {hubWebsite && (
+          <a
+            href={hubWebsite}
+            css={css`
+              font-family: Source Sans Pro;
+              font-style: normal;
+              font-weight: bold;
+              font-size: 16px;
+              line-height: 20px;
+              text-align: center;
+              letter-spacing: 0.14em;
+              text-transform: uppercase;
+              color: var(--sunrise-gray);
+              text-decoration: none;
+              height: 68px;
+              background-color: var(--sunrise-yellow);
+              display: flex;
+              align-items: center;
+              padding: 0 40px;
+              margin-top: 32px;
+            `}>
+            Visit Sunrise {hubName}’s full website
+          </a>
+        )}
       </div>
     </section>
   )
@@ -96,7 +98,7 @@ Hero.propTypes = {
   background: PropTypes.string.isRequired,
   hubLogo: PropTypes.string.isRequired,
   hubName: PropTypes.string.isRequired,
-  hubWebsite: PropTypes.string.isRequired,
+  hubWebsite: PropTypes.string,
 }
 
 Hero.defaultProps = {
