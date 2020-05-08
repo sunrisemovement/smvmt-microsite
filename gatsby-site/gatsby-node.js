@@ -93,4 +93,23 @@ exports.sourceNodes = async ({
       `Hub "${HUB_NAME}" does not exist in Hubhub. Please check your config, or else contact a Hubhub admin.`
     )
   }
+
+  const hubNodeData = {
+    name: hub.name,
+    about: hub.about,
+    email: hub.email,
+    website: hub.website,
+    facebook: hub.facebook,
+    instagram: hub.instagram,
+    twitter: hub.twitter,
+  }
+
+  createNode({
+    id: createNodeId(`Hub-${hub.name}`),
+    ...hubNodeData,
+    internal: {
+      type: "Hub",
+      contentDigest: createContentDigest(hubNodeData),
+    },
+  })
 }
