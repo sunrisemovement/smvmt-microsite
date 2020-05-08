@@ -104,9 +104,43 @@ exports.sourceNodes = async ({
     twitter: hub.twitter,
   }
 
+  const hubNodeLinks = {
+    documents___NODE: !hub.documents
+      ? []
+      : await Promise.all(
+          hub.documents.map(async remoteFile => {
+            const fileNode = await createRemoteFileNode({
+              url: remoteFile.url,
+              name: remoteFile.filename,
+              cache: cache,
+              createNode: createNode,
+              createNodeId: createNodeId,
+              reporter: reporter,
+              store: store,
+            })
+            return fileNode.id
+          })
+        ),
+    images___NODE: await Promise.all(
+      hub.images.map(async remoteFile => {
+        const fileNode = await createRemoteFileNode({
+          url: remoteFile.url,
+          name: remoteFile.filename,
+          cache: cache,
+          createNode: createNode,
+          createNodeId: createNodeId,
+          reporter: reporter,
+          store: store,
+        })
+        return fileNode.id
+      })
+    ),
+  }
+
   createNode({
     id: createNodeId(`Hub-${hub.name}`),
     ...hubNodeData,
+    ...hubNodeLinks,
     internal: {
       type: "Hub",
       contentDigest: createContentDigest(hubNodeData),
