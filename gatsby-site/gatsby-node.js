@@ -49,3 +49,17 @@
  * @property {Array<Hub>} map_data
  */
 
+/**
+ * @param {import("gatsby").SourceNodesArgs} pluginArgs
+ */
+exports.sourceNodes = async ({
+  actions,
+  createContentDigest,
+  createNodeId,
+  reporter,
+  cache,
+  store,
+}) => {
+  const { createNode } = actions
+
+}
