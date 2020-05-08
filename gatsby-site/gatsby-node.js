@@ -1,3 +1,6 @@
+const fetch = require("node-fetch").default
+const { createRemoteFileNode } = require("gatsby-source-filesystem")
+
 /**
  * @typedef {Object} RemoteFileThumbnail
  * @property {number} height
@@ -49,6 +52,9 @@
  * @property {Array<Hub>} map_data
  */
 
+const ENDPOINT = "https://sunrise-hub-json-staging.s3.amazonaws.com/hubs.json"
+const HUB_NAME = "Sunrise Foof"
+
 /**
  * @param {import("gatsby").SourceNodesArgs} pluginArgs
  */
@@ -62,4 +68,29 @@ exports.sourceNodes = async ({
 }) => {
   const { createNode } = actions
 
+  const response = await fetch(ENDPOINT).catch(error => {
+    reporter.panicOnBuild(
+      `Request to hubhubh endpoint ${ENDPOINT} could not send.`,
+      error
+    )
+    throw error
+  })
+
+  if (!response.ok) {
+    reporter.panicOnBuild(
+      `Request to hubhub endpoint ${ENDPOINT} failed with status code ${response.status}.`
+    )
+    return
+  }
+
+  /** @type {HubhubPayload} */
+  const data = await response.json()
+
+  const hub = data.map_data.find(hub => hub.name === HUB_NAME)
+
+  if (!hub) {
+    reporter.panicOnBuild(
+      `Hub "${HUB_NAME}" does not exist in Hubhub. Please check your config, or else contact a Hubhub admin.`
+    )
+  }
 }
