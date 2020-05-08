@@ -147,3 +147,22 @@ exports.sourceNodes = async ({
     },
   })
 }
+
+exports.createSchemaCustomization = ({ actions }) => {
+  const { createTypes } = actions
+  const typeDefs = `
+    type Hub implements Node {
+      id: ID!
+      name: String!
+      about: String!
+      email: String!
+      website: String
+      facebook: String
+      instagram: String
+      twitter: String
+      documents: [File!]! @link(from: "documents___NODE")
+      images: [File!]! @link(from: "images___NODE")
+    }
+  `
+  createTypes(typeDefs)
+}
