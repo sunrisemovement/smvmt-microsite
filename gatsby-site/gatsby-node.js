@@ -70,7 +70,7 @@ exports.sourceNodes = async ({
 
   const response = await fetch(ENDPOINT).catch(error => {
     reporter.panicOnBuild(
-      `Request to hubhubh endpoint ${ENDPOINT} could not send.`,
+      `Request to hubhub endpoint ${ENDPOINT} could not send.`,
       error
     )
     throw error
