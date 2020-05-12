@@ -28,6 +28,12 @@ const Body = styled.div`
   color: #000;
 `
 
+const Paragraph = styled.p`
+  &:last-child {
+    margin-bottom: 0;
+  }
+`
+
 /**
  * @typedef {Object} AboutProps
  * @property {string} content
@@ -39,7 +45,14 @@ const About = ({ hubName, content }) => {
   return (
     <Section>
       <Heading>About Sunrise {hubName}</Heading>
-      <Body>{content}</Body>
+      <Body>
+        {content
+          .split(/\n\n+/)
+          .filter(entry => entry)
+          .map((entry, index) => (
+            <Paragraph key={index}>{entry}</Paragraph>
+          ))}
+      </Body>
     </Section>
   )
 }
