@@ -121,20 +121,22 @@ exports.sourceNodes = async ({
             return fileNode.id
           })
         ),
-    images___NODE: await Promise.all(
-      hub.images.map(async remoteFile => {
-        const fileNode = await createRemoteFileNode({
-          url: remoteFile.url,
-          name: remoteFile.filename,
-          cache: cache,
-          createNode: createNode,
-          createNodeId: createNodeId,
-          reporter: reporter,
-          store: store,
-        })
-        return fileNode.id
-      })
-    ),
+    images___NODE: !hub.images
+      ? []
+      : await Promise.all(
+          hub.images.map(async remoteFile => {
+            const fileNode = await createRemoteFileNode({
+              url: remoteFile.url,
+              name: remoteFile.filename,
+              cache: cache,
+              createNode: createNode,
+              createNodeId: createNodeId,
+              reporter: reporter,
+              store: store,
+            })
+            return fileNode.id
+          })
+        ),
   }
 
   createNode({
