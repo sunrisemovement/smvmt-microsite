@@ -43,10 +43,12 @@ const LogoContainer = styled.div`
   align-items: center;
   justify-content: center;
   margin-bottom: 16px;
+  padding: 4px;
 `
 
-  width: 32.5%;
 const LogoImage = styled(Image)`
+  width: ${(Math.sqrt(2) / 2) * 100}%;
+  height: ${(Math.sqrt(2) / 2) * 100}%;
 `
 
 const Headline = styled.h1`
@@ -94,7 +96,7 @@ const Hero = ({ dense, background, hubLogo, hubName, hubWebsite }) => {
       <BackgroundImage {...background} style={{ position: "absolute" }} />
       <Content dense={dense}>
         <LogoContainer>
-          <LogoImage {...hubLogo} />
+          <LogoImage {...hubLogo} imgStyle={{ objectFit: "contain" }} />
         </LogoContainer>
         <Headline>Sunrise Movement {hubName}</Headline>
         {hubWebsite && (
