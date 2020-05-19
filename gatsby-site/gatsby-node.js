@@ -92,7 +92,7 @@ exports.sourceNodes = async helpers => {
   }
 
   const hubNodeData = {
-    name: hub.name,
+    name: parseName(hub.name),
     about: hub.about,
     email: hub.email,
     website: hub.website,
@@ -174,4 +174,12 @@ const fileNodeFromRemoteFile = async (helpers, remoteFile) => {
     ...helpers.actions,
   })
   return fileNode.id
+}
+
+/**
+ * @param {string} input
+ * @returns {string}
+ */
+const parseName = input => {
+  return input.replace(/sunrise(\s+movement)?/i, "").trim()
 }
