@@ -41,6 +41,11 @@ const IndexPage = ({ data }) => {
 export default IndexPage
 
 /**
+ * @typedef {Object} Document
+ * @property {string} id
+ * @property {string} name
+ * @property {string} publicURL
+ *
  * @typedef {Object} PageQuery
  * @property {Object} hub
  * @property {string} hub.name
@@ -50,6 +55,7 @@ export default IndexPage
  * @property {import("gatsby-image").GatsbyImageProps} hub.logo.childImageSharp
  * @property {Object} hub.hero
  * @property {import("gatsby-image").GatsbyImageProps} hub.hero.childImageSharp
+ * @property {Array<Document>} hub.documents
  * @property {Object} defaultLogo
  * @property {import("gatsby-image").GatsbyImageProps} defaultLogo.childImageSharp
  * @property {Object} defaultHero
@@ -95,6 +101,11 @@ export const pageQuery = graphql`
             ...GatsbyImageSharpFluid
           }
         }
+      }
+      documents {
+        id
+        name
+        publicURL
       }
     }
   }
