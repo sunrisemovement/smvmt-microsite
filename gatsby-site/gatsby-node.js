@@ -30,6 +30,7 @@ const { createRemoteFileNode } = require("gatsby-source-filesystem")
 
 /**
  * @typedef {Object} Hub
+ * @property {string} id
  * @property {string} name
  * @property {string} about
  * @property {string} city
@@ -53,7 +54,7 @@ const { createRemoteFileNode } = require("gatsby-source-filesystem")
  */
 
 const ENDPOINT = "https://sunrise-hub-json-staging.s3.amazonaws.com/hubs.json"
-const HUB_NAME = "Sunrise Foof"
+const HUB_ID = "recUYxCbqbCdgZ2h1"
 
 /**
  * @param {import("gatsby").SourceNodesArgs} pluginArgs
@@ -86,11 +87,11 @@ exports.sourceNodes = async ({
   /** @type {HubhubPayload} */
   const data = await response.json()
 
-  const hub = data.map_data.find(hub => hub.name === HUB_NAME)
+  const hub = data.map_data.find(hub => hub.id === HUB_ID)
 
   if (!hub) {
     reporter.panicOnBuild(
-      `Hub "${HUB_NAME}" does not exist in Hubhub. Please check your config, or else contact a Hubhub admin.`
+      `Hub ${HUB_ID} does not exist in Hubhub. Please check your config, or else contact a Hubhub admin.`
     )
   }
 
@@ -140,7 +141,7 @@ exports.sourceNodes = async ({
   }
 
   createNode({
-    id: createNodeId(`Hub-${hub.name}`),
+    id: createNodeId(`Hub-${hub.id}`),
     ...hubNodeData,
     ...hubNodeLinks,
     internal: {
