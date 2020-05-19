@@ -18,11 +18,15 @@ const BackgroundImage = styled.img`
   z-index: 1;
 `
 
+/** @param {{ dense?: boolean }} props */
+const contentPadding = props =>
+  props.dense ? "60px 32px 108px" : "190px 32px 354px"
+
 const Content = styled.div`
   position: relative;
   z-index: 2;
   background-color: rgba(0, 0, 0, 0.5);
-  padding: ${({ dense }) => dense ? "60px 32px 108px" : "190px 32px 354px"};
+  padding: ${contentPadding};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -82,9 +86,7 @@ const Hero = ({ dense, background, hubLogo, hubName, hubWebsite }) => {
         <LogoContainer>
           <LogoImage src={hubLogo} />
         </LogoContainer>
-        <Headline>
-          Sunrise Movement {hubName}
-        </Headline>
+        <Headline>Sunrise Movement {hubName}</Headline>
         {hubWebsite && (
           <WebsiteLink href={hubWebsite}>
             Visit Sunrise {hubName}’s full website
