@@ -56,7 +56,7 @@ const { createRemoteFileNode } = require("gatsby-source-filesystem")
  */
 
 const ENDPOINT = "https://sunrise-hub-json-staging.s3.amazonaws.com/hubs.json"
-const HUB_ID = "recUYxCbqbCdgZ2h1"
+const HUB_ID = "recW8zsQarSo3I3Ve"
 
 /**
  * @param {import("gatsby").SourceNodesArgs} helpers
