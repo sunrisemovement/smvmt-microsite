@@ -3,11 +3,6 @@ import styled from "styled-components"
 import Layout from "../components/layout"
 import Hero from "../components/Hero"
 import About from "../components/About"
-
-// @ts-ignore
-import photoPlaceholderPath from "../images/photo-placeholder.svg"
-// @ts-ignore
-import sunriseLogoPath from "../images/sunrise-logo.png"
 import { graphql } from "gatsby"
 
 const MainContent = styled.div`
@@ -27,10 +22,14 @@ const IndexPage = ({ data }) => {
     <Layout>
       <Hero
         dense
-        background={data.hub.hero.childImageSharp}
-        hubLogo={data.hub.logo.childImageSharp}
         hubName={data.hub.name}
         hubWebsite={data.hub.website}
+        background={
+          data.hub.hero?.childImageSharp ?? data.defaultHero.childImageSharp
+        }
+        hubLogo={
+          data.hub.logo?.childImageSharp ?? data.defaultLogo.childImageSharp
+        }
       />
       <MainContent>
         <About
@@ -55,10 +54,34 @@ export default IndexPage
  * @property {import("gatsby-image").GatsbyImageProps} hub.logo.childImageSharp
  * @property {Object} hub.hero
  * @property {import("gatsby-image").GatsbyImageProps} hub.hero.childImageSharp
+ * @property {Object} defaultLogo
+ * @property {import("gatsby-image").GatsbyImageProps} defaultLogo.childImageSharp
+ * @property {Object} defaultHero
+ * @property {import("gatsby-image").GatsbyImageProps} defaultHero.childImageSharp
  */
 
 export const pageQuery = graphql`
   query IndexPage {
+    defaultLogo: file(
+      sourceInstanceName: { eq: "images" }
+      relativePath: { eq: "sunrise-logo.png" }
+    ) {
+      childImageSharp {
+        fluid(maxWidth: 28) {
+          ...GatsbyImageSharpFluid
+        }
+      }
+    }
+    defaultHero: file(
+      sourceInstanceName: { eq: "images" }
+      relativePath: { eq: "default-hero.jpg" }
+    ) {
+      childImageSharp {
+        fluid(maxWidth: 1440) {
+          ...GatsbyImageSharpFluid
+        }
+      }
+    }
     hub {
       name
       website
