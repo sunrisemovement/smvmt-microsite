@@ -32,12 +32,7 @@ const IndexPage = ({ data }) => {
         }
       />
       <MainContent>
-        <About
-          hubName="PDX"
-          content={
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\n\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-          }
-        />
+        <About hubName={data.hub.name} content={data.hub.about} />
       </MainContent>
     </Layout>
   )
@@ -49,6 +44,7 @@ export default IndexPage
  * @typedef {Object} PageQuery
  * @property {Object} hub
  * @property {string} hub.name
+ * @property {string} hub.about
  * @property {string | null} hub.website
  * @property {Object} hub.logo
  * @property {import("gatsby-image").GatsbyImageProps} hub.logo.childImageSharp
@@ -84,6 +80,7 @@ export const pageQuery = graphql`
     }
     hub {
       name
+      about
       website
       logo {
         childImageSharp {
