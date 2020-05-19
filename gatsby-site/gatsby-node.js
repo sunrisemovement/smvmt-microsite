@@ -42,8 +42,8 @@ const { createRemoteFileNode } = require("gatsby-source-filesystem")
  * @property {string | null} twitter
  * @property {string | null} signup_link
  * @property {Array<HubLeader>} leaders
- * @property {Array<RemoteFile> | null} documents
- * @property {Array<RemoteFile> | null} images
+ * @property {Array<RemoteFile> | null | undefined} documents
+ * @property {Array<RemoteFile> | null | undefined} images
  */
 
 /**
