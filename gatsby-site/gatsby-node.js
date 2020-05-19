@@ -45,6 +45,8 @@ const { createRemoteFileNode } = require("gatsby-source-filesystem")
  * @property {Array<HubLeader>} leaders
  * @property {Array<RemoteFile> | null | undefined} documents
  * @property {Array<RemoteFile> | null | undefined} images
+ * @property {Array<RemoteFile> | null | undefined} hero_image
+ * @property {Array<RemoteFile> | null | undefined} logo_image
  */
 
 /**
@@ -57,16 +59,10 @@ const ENDPOINT = "https://sunrise-hub-json-staging.s3.amazonaws.com/hubs.json"
 const HUB_ID = "recUYxCbqbCdgZ2h1"
 
 /**
- * @param {import("gatsby").SourceNodesArgs} pluginArgs
+ * @param {import("gatsby").SourceNodesArgs} helpers
  */
-exports.sourceNodes = async ({
-  actions,
-  createContentDigest,
-  createNodeId,
-  reporter,
-  cache,
-  store,
-}) => {
+exports.sourceNodes = async helpers => {
+  const { actions, createContentDigest, createNodeId, reporter } = helpers
   const { createNode } = actions
 
   const response = await fetch(ENDPOINT).catch(error => {
@@ -106,37 +102,27 @@ exports.sourceNodes = async ({
   }
 
   const hubNodeLinks = {
+    hero___NODE:
+      !hub.hero_image || hub.hero_image.length === 0
+        ? null
+        : await fileNodeFromRemoteFile(helpers, hub.hero_image[0]),
+    logo___NODE:
+      !hub.logo_image || hub.logo_image.length === 0
+        ? null
+        : await fileNodeFromRemoteFile(helpers, hub.logo_image[0]),
     documents___NODE: !hub.documents
       ? []
       : await Promise.all(
-          hub.documents.map(async remoteFile => {
-            const fileNode = await createRemoteFileNode({
-              url: remoteFile.url,
-              name: remoteFile.filename,
-              cache: cache,
-              createNode: createNode,
-              createNodeId: createNodeId,
-              reporter: reporter,
-              store: store,
-            })
-            return fileNode.id
-          })
+          hub.documents.map(remoteFile =>
+            fileNodeFromRemoteFile(helpers, remoteFile)
+          )
         ),
     images___NODE: !hub.images
       ? []
       : await Promise.all(
-          hub.images.map(async remoteFile => {
-            const fileNode = await createRemoteFileNode({
-              url: remoteFile.url,
-              name: remoteFile.filename,
-              cache: cache,
-              createNode: createNode,
-              createNodeId: createNodeId,
-              reporter: reporter,
-              store: store,
-            })
-            return fileNode.id
-          })
+          hub.images.map(remoteFile =>
+            fileNodeFromRemoteFile(helpers, remoteFile)
+          )
         ),
   }
 
@@ -146,7 +132,10 @@ exports.sourceNodes = async ({
     ...hubNodeLinks,
     internal: {
       type: "Hub",
-      contentDigest: createContentDigest(hubNodeData),
+      contentDigest: createContentDigest({
+        ...hubNodeData,
+        ...hubNodeLinks,
+      }),
     },
   })
 }
@@ -163,9 +152,26 @@ exports.createSchemaCustomization = ({ actions }) => {
       facebook: String
       instagram: String
       twitter: String
+      hero: File @link(from: "hero___NODE")
+      logo: File @link(from: "logo___NODE")
       documents: [File!]! @link(from: "documents___NODE")
       images: [File!]! @link(from: "images___NODE")
     }
   `
   createTypes(typeDefs)
+}
+
+/**
+ * @param {import("gatsby").SourceNodesArgs} helpers
+ * @param {RemoteFile} remoteFile
+ * @returns {Promise<string>}
+ */
+const fileNodeFromRemoteFile = async (helpers, remoteFile) => {
+  const fileNode = await createRemoteFileNode({
+    url: remoteFile.url,
+    name: remoteFile.filename,
+    ...helpers,
+    ...helpers.actions,
+  })
+  return fileNode.id
 }
