@@ -3,12 +3,16 @@ import styled from "styled-components"
 import Layout from "../components/layout"
 import Hero from "../components/Hero"
 import About from "../components/About"
+import Documents from "../components/Documents"
 import { graphql } from "gatsby"
 
 const MainContent = styled.div`
   max-width: 756px;
   padding: 80px 16px;
   margin: 0 auto;
+  display: grid;
+  grid-auto-flow: row;
+  grid-row-gap: 80px;
 `
 
 /**
@@ -33,6 +37,7 @@ const IndexPage = ({ data }) => {
       />
       <MainContent>
         <About hubName={data.hub.name} content={data.hub.about} />
+        <Documents documents={data.hub.documents} />
       </MainContent>
     </Layout>
   )
