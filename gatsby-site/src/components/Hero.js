@@ -1,5 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
+import Image from "gatsby-image"
 import styled from "styled-components"
 
 const Section = styled.section`
@@ -7,8 +8,7 @@ const Section = styled.section`
   overflow: hidden;
 `
 
-const BackgroundImage = styled.img`
-  position: absolute;
+const BackgroundImage = styled(Image)`
   top: 0;
   left: 0;
   width: 100%;
@@ -43,10 +43,12 @@ const LogoContainer = styled.div`
   align-items: center;
   justify-content: center;
   margin-bottom: 16px;
+  padding: 6px;
 `
 
-const LogoImage = styled.img`
-  width: 32.5%;
+const LogoImage = styled(Image)`
+  width: ${(Math.sqrt(2) / 2) * 100}%;
+  height: ${(Math.sqrt(2) / 2) * 100}%;
 `
 
 const Headline = styled.h1`
@@ -78,13 +80,23 @@ const WebsiteLink = styled.a`
   margin-top: 32px;
 `
 
+/**
+ * @typedef {Object} HeroProps
+ * @property {boolean} dense
+ * @property {import("gatsby-image").GatsbyImageProps} background
+ * @property {import("gatsby-image").GatsbyImageProps} hubLogo
+ * @property {string} hubName
+ * @property {string | null} hubWebsite
+ *
+ * @param {HeroProps} props
+ */
 const Hero = ({ dense, background, hubLogo, hubName, hubWebsite }) => {
   return (
     <Section>
-      <BackgroundImage src={background} />
+      <BackgroundImage {...background} style={{ position: "absolute" }} />
       <Content dense={dense}>
         <LogoContainer>
-          <LogoImage src={hubLogo} />
+          <LogoImage {...hubLogo} imgStyle={{ objectFit: "contain" }} />
         </LogoContainer>
         <Headline>Sunrise Movement {hubName}</Headline>
         {hubWebsite && (
@@ -95,18 +107,6 @@ const Hero = ({ dense, background, hubLogo, hubName, hubWebsite }) => {
       </Content>
     </Section>
   )
-}
-
-Hero.propTypes = {
-  dense: PropTypes.bool,
-  background: PropTypes.string.isRequired,
-  hubLogo: PropTypes.string.isRequired,
-  hubName: PropTypes.string.isRequired,
-  hubWebsite: PropTypes.string,
-}
-
-Hero.defaultProps = {
-  dense: false,
 }
 
 export default Hero

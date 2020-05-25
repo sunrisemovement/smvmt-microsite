@@ -30,6 +30,7 @@ const { createRemoteFileNode } = require("gatsby-source-filesystem")
 
 /**
  * @typedef {Object} Hub
+ * @property {string} id
  * @property {string} name
  * @property {string} about
  * @property {string} city
@@ -42,8 +43,10 @@ const { createRemoteFileNode } = require("gatsby-source-filesystem")
  * @property {string | null} twitter
  * @property {string | null} signup_link
  * @property {Array<HubLeader>} leaders
- * @property {Array<RemoteFile> | null} documents
- * @property {Array<RemoteFile> | null} images
+ * @property {Array<RemoteFile> | null | undefined} documents
+ * @property {Array<RemoteFile> | null | undefined} images
+ * @property {Array<RemoteFile> | null | undefined} hero_image
+ * @property {Array<RemoteFile> | null | undefined} logo_image
  */
 
 /**
@@ -53,19 +56,13 @@ const { createRemoteFileNode } = require("gatsby-source-filesystem")
  */
 
 const ENDPOINT = "https://sunrise-hub-json-staging.s3.amazonaws.com/hubs.json"
-const HUB_NAME = "Sunrise Foof"
+const HUB_ID = "recW8zsQarSo3I3Ve"
 
 /**
- * @param {import("gatsby").SourceNodesArgs} pluginArgs
+ * @param {import("gatsby").SourceNodesArgs} helpers
  */
-exports.sourceNodes = async ({
-  actions,
-  createContentDigest,
-  createNodeId,
-  reporter,
-  cache,
-  store,
-}) => {
+exports.sourceNodes = async helpers => {
+  const { actions, createContentDigest, createNodeId, reporter } = helpers
   const { createNode } = actions
 
   const response = await fetch(ENDPOINT).catch(error => {
@@ -86,16 +83,16 @@ exports.sourceNodes = async ({
   /** @type {HubhubPayload} */
   const data = await response.json()
 
-  const hub = data.map_data.find(hub => hub.name === HUB_NAME)
+  const hub = data.map_data.find(hub => hub.id === HUB_ID)
 
   if (!hub) {
     reporter.panicOnBuild(
-      `Hub "${HUB_NAME}" does not exist in Hubhub. Please check your config, or else contact a Hubhub admin.`
+      `Hub ${HUB_ID} does not exist in Hubhub. Please check your config, or else contact a Hubhub admin.`
     )
   }
 
   const hubNodeData = {
-    name: hub.name,
+    name: parseName(hub.name),
     about: hub.about,
     email: hub.email,
     website: hub.website,
@@ -105,47 +102,40 @@ exports.sourceNodes = async ({
   }
 
   const hubNodeLinks = {
+    hero___NODE:
+      !hub.hero_image || hub.hero_image.length === 0
+        ? null
+        : await fileNodeFromRemoteFile(helpers, hub.hero_image[0]),
+    logo___NODE:
+      !hub.logo_image || hub.logo_image.length === 0
+        ? null
+        : await fileNodeFromRemoteFile(helpers, hub.logo_image[0]),
     documents___NODE: !hub.documents
       ? []
       : await Promise.all(
-          hub.documents.map(async remoteFile => {
-            const fileNode = await createRemoteFileNode({
-              url: remoteFile.url,
-              name: remoteFile.filename,
-              cache: cache,
-              createNode: createNode,
-              createNodeId: createNodeId,
-              reporter: reporter,
-              store: store,
-            })
-            return fileNode.id
-          })
+          hub.documents.map(remoteFile =>
+            fileNodeFromRemoteFile(helpers, remoteFile)
+          )
         ),
     images___NODE: !hub.images
       ? []
       : await Promise.all(
-          hub.images.map(async remoteFile => {
-            const fileNode = await createRemoteFileNode({
-              url: remoteFile.url,
-              name: remoteFile.filename,
-              cache: cache,
-              createNode: createNode,
-              createNodeId: createNodeId,
-              reporter: reporter,
-              store: store,
-            })
-            return fileNode.id
-          })
+          hub.images.map(remoteFile =>
+            fileNodeFromRemoteFile(helpers, remoteFile)
+          )
         ),
   }
 
   createNode({
-    id: createNodeId(`Hub-${hub.name}`),
+    id: createNodeId(`Hub-${hub.id}`),
     ...hubNodeData,
     ...hubNodeLinks,
     internal: {
       type: "Hub",
-      contentDigest: createContentDigest(hubNodeData),
+      contentDigest: createContentDigest({
+        ...hubNodeData,
+        ...hubNodeLinks,
+      }),
     },
   })
 }
@@ -162,9 +152,34 @@ exports.createSchemaCustomization = ({ actions }) => {
       facebook: String
       instagram: String
       twitter: String
+      hero: File @link(from: "hero___NODE")
+      logo: File @link(from: "logo___NODE")
       documents: [File!]! @link(from: "documents___NODE")
       images: [File!]! @link(from: "images___NODE")
     }
   `
   createTypes(typeDefs)
+}
+
+/**
+ * @param {import("gatsby").SourceNodesArgs} helpers
+ * @param {RemoteFile} remoteFile
+ * @returns {Promise<string>}
+ */
+const fileNodeFromRemoteFile = async (helpers, remoteFile) => {
+  const fileNode = await createRemoteFileNode({
+    url: remoteFile.url,
+    name: remoteFile.filename,
+    ...helpers,
+    ...helpers.actions,
+  })
+  return fileNode.id
+}
+
+/**
+ * @param {string} input
+ * @returns {string}
+ */
+const parseName = input => {
+  return input.replace(/sunrise(\s+movement)?/i, "").trim()
 }
