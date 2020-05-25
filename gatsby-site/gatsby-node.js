@@ -76,7 +76,7 @@ exports.createPages = async ({ graphql, actions: { createPage } }) => {
   result.data.allHub.nodes.forEach(({ id, slug }) => {
     createPage({
       path: slug,
-      component: path.resolve(`./src/pages/index.js`),
+      component: path.resolve(`./src/templates/hub.js`),
       context: { id },
     })
   })
@@ -114,7 +114,7 @@ exports.sourceNodes = async helpers => {
       const hubNodeData = {
         name,
         slug: slugFromName(name),
-        about: hub.about,
+        about: hub.about || "",
         email: hub.email,
         website: hub.website,
         facebook: hub.facebook,
