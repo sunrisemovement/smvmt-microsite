@@ -88,6 +88,7 @@ exports.sourceNodes = async helpers => {
 
       const hubNodeData = {
         name,
+        slug: slugFromName(name),
         about: hub.about,
         email: hub.email,
         website: hub.website,
@@ -143,6 +144,7 @@ exports.createSchemaCustomization = ({ actions }) => {
     type Hub implements Node {
       id: ID!
       name: String!
+      slug: String!
       about: String!
       email: String!
       website: String
@@ -179,4 +181,12 @@ const fileNodeFromRemoteFile = async (helpers, remoteFile) => {
  */
 const parseName = input => {
   return input.replace(/sunrise(\s+movement)?/i, "").trim()
+}
+
+/**
+ * @param {string} input
+ * @returns {string}
+ */
+const slugFromName = input => {
+  return input.toLowerCase().replace(/\s+/g, "-")
 }
