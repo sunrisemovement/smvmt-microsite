@@ -1,4 +1,5 @@
 const fetch = require("node-fetch").default
+const path = require("path")
 const { createRemoteFileNode } = require("gatsby-source-filesystem")
 
 /**
@@ -56,6 +57,30 @@ const { createRemoteFileNode } = require("gatsby-source-filesystem")
  */
 
 const ENDPOINT = "https://sunrise-hub-json-staging.s3.amazonaws.com/hubs.json"
+
+/**
+ * @param {import("gatsby").CreatePagesArgs} helpers
+ */
+exports.createPages = async ({ graphql, actions: { createPage } }) => {
+  const result = await graphql(`
+    query CreatePagesForHubs {
+      allHub {
+        nodes {
+          id
+          slug
+        }
+      }
+    }
+  `)
+
+  result.data.allHub.nodes.forEach(({ id, slug }) => {
+    createPage({
+      path: slug,
+      component: path.resolve(`./src/pages/index.js`),
+      context: { id },
+    })
+  })
+}
 
 /**
  * @param {import("gatsby").SourceNodesArgs} helpers

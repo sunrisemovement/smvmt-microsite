@@ -68,7 +68,7 @@ export default IndexPage
  */
 
 export const pageQuery = graphql`
-  query IndexPage {
+  query IndexPage($id: String!) {
     defaultLogo: file(
       sourceInstanceName: { eq: "images" }
       relativePath: { eq: "sunrise-logo.png" }
@@ -89,7 +89,7 @@ export const pageQuery = graphql`
         }
       }
     }
-    hub {
+    hub(id: { eq: $id }) {
       name
       about
       website
