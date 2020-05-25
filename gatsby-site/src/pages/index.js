@@ -3,12 +3,16 @@ import styled from "styled-components"
 import Layout from "../components/layout"
 import Hero from "../components/Hero"
 import About from "../components/About"
+import Documents from "../components/Documents"
 import { graphql } from "gatsby"
 
 const MainContent = styled.div`
   max-width: 756px;
   padding: 80px 16px;
   margin: 0 auto;
+  display: grid;
+  grid-auto-flow: row;
+  grid-row-gap: 80px;
 `
 
 /**
@@ -33,6 +37,7 @@ const IndexPage = ({ data }) => {
       />
       <MainContent>
         <About hubName={data.hub.name} content={data.hub.about} />
+        <Documents documents={data.hub.documents} />
       </MainContent>
     </Layout>
   )
@@ -41,6 +46,11 @@ const IndexPage = ({ data }) => {
 export default IndexPage
 
 /**
+ * @typedef {Object} Document
+ * @property {string} id
+ * @property {string} name
+ * @property {string} publicURL
+ *
  * @typedef {Object} PageQuery
  * @property {Object} hub
  * @property {string} hub.name
@@ -50,6 +60,7 @@ export default IndexPage
  * @property {import("gatsby-image").GatsbyImageProps} hub.logo.childImageSharp
  * @property {Object} hub.hero
  * @property {import("gatsby-image").GatsbyImageProps} hub.hero.childImageSharp
+ * @property {Array<Document>} hub.documents
  * @property {Object} defaultLogo
  * @property {import("gatsby-image").GatsbyImageProps} defaultLogo.childImageSharp
  * @property {Object} defaultHero
@@ -95,6 +106,11 @@ export const pageQuery = graphql`
             ...GatsbyImageSharpFluid
           }
         }
+      }
+      documents {
+        id
+        name
+        publicURL
       }
     }
   }
