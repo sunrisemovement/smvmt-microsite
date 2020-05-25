@@ -20,3 +20,6 @@ jobs:
 
       - name: Run Gatsby build
         run: npm run build
+
+      - name: Deploy Gatsby site to gh-pages branch
+        run: npx gh-pages -d public -r https://${{ secrets.GITHUB_TOKEN }}@github.com/sunrisemovement/smvmt-microsite.git
