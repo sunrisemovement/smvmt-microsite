@@ -1,0 +1,22 @@
+name: Gatsby Publish
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./gatsby-site
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
+
+      - name: Install NPM dependencies
+        run: npm ci
+
+      - name: Run Gatsby build
+        run: npm run build
