@@ -1,4 +1,5 @@
 const fetch = require("node-fetch").default
+const path = require("path")
 const { createRemoteFileNode } = require("gatsby-source-filesystem")
 
 /**
@@ -56,7 +57,30 @@ const { createRemoteFileNode } = require("gatsby-source-filesystem")
  */
 
 const ENDPOINT = "https://sunrise-hub-json-staging.s3.amazonaws.com/hubs.json"
-const HUB_ID = "recW8zsQarSo3I3Ve"
+
+/**
+ * @param {import("gatsby").CreatePagesArgs} helpers
+ */
+exports.createPages = async ({ graphql, actions: { createPage } }) => {
+  const result = await graphql(`
+    query CreatePagesForHubs {
+      allHub {
+        nodes {
+          id
+          slug
+        }
+      }
+    }
+  `)
+
+  result.data.allHub.nodes.forEach(({ id, slug }) => {
+    createPage({
+      path: slug,
+      component: path.resolve(`./src/templates/hub.js`),
+      context: { id },
+    })
+  })
+}
 
 /**
  * @param {import("gatsby").SourceNodesArgs} helpers
@@ -83,61 +107,60 @@ exports.sourceNodes = async helpers => {
   /** @type {HubhubPayload} */
   const data = await response.json()
 
-  const hub = data.map_data.find(hub => hub.id === HUB_ID)
+  await Promise.all(
+    data.map_data.map(async hub => {
+      const name = parseName(hub.name)
 
-  if (!hub) {
-    reporter.panicOnBuild(
-      `Hub ${HUB_ID} does not exist in Hubhub. Please check your config, or else contact a Hubhub admin.`
-    )
-  }
+      const hubNodeData = {
+        name,
+        slug: slugFromName(name),
+        about: hub.about || "",
+        email: hub.email,
+        website: hub.website,
+        facebook: hub.facebook,
+        instagram: hub.instagram,
+        twitter: hub.twitter,
+      }
 
-  const hubNodeData = {
-    name: parseName(hub.name),
-    about: hub.about,
-    email: hub.email,
-    website: hub.website,
-    facebook: hub.facebook,
-    instagram: hub.instagram,
-    twitter: hub.twitter,
-  }
+      const hubNodeLinks = {
+        hero___NODE:
+          !hub.hero_image || hub.hero_image.length === 0
+            ? null
+            : await fileNodeFromRemoteFile(helpers, hub.hero_image[0]),
+        logo___NODE:
+          !hub.logo_image || hub.logo_image.length === 0
+            ? null
+            : await fileNodeFromRemoteFile(helpers, hub.logo_image[0]),
+        documents___NODE: !hub.documents
+          ? []
+          : await Promise.all(
+              hub.documents.map(remoteFile =>
+                fileNodeFromRemoteFile(helpers, remoteFile)
+              )
+            ),
+        images___NODE: !hub.images
+          ? []
+          : await Promise.all(
+              hub.images.map(remoteFile =>
+                fileNodeFromRemoteFile(helpers, remoteFile)
+              )
+            ),
+      }
 
-  const hubNodeLinks = {
-    hero___NODE:
-      !hub.hero_image || hub.hero_image.length === 0
-        ? null
-        : await fileNodeFromRemoteFile(helpers, hub.hero_image[0]),
-    logo___NODE:
-      !hub.logo_image || hub.logo_image.length === 0
-        ? null
-        : await fileNodeFromRemoteFile(helpers, hub.logo_image[0]),
-    documents___NODE: !hub.documents
-      ? []
-      : await Promise.all(
-          hub.documents.map(remoteFile =>
-            fileNodeFromRemoteFile(helpers, remoteFile)
-          )
-        ),
-    images___NODE: !hub.images
-      ? []
-      : await Promise.all(
-          hub.images.map(remoteFile =>
-            fileNodeFromRemoteFile(helpers, remoteFile)
-          )
-        ),
-  }
-
-  createNode({
-    id: createNodeId(`Hub-${hub.id}`),
-    ...hubNodeData,
-    ...hubNodeLinks,
-    internal: {
-      type: "Hub",
-      contentDigest: createContentDigest({
+      createNode({
+        id: createNodeId(`Hub-${hub.id}`),
         ...hubNodeData,
         ...hubNodeLinks,
-      }),
-    },
-  })
+        internal: {
+          type: "Hub",
+          contentDigest: createContentDigest({
+            ...hubNodeData,
+            ...hubNodeLinks,
+          }),
+        },
+      })
+    })
+  )
 }
 
 exports.createSchemaCustomization = ({ actions }) => {
@@ -146,6 +169,7 @@ exports.createSchemaCustomization = ({ actions }) => {
     type Hub implements Node {
       id: ID!
       name: String!
+      slug: String!
       about: String!
       email: String!
       website: String
@@ -182,4 +206,12 @@ const fileNodeFromRemoteFile = async (helpers, remoteFile) => {
  */
 const parseName = input => {
   return input.replace(/sunrise(\s+movement)?/i, "").trim()
+}
+
+/**
+ * @param {string} input
+ * @returns {string}
+ */
+const slugFromName = input => {
+  return input.toLowerCase().replace(/\s+/g, "-")
 }
