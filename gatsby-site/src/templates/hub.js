@@ -16,12 +16,12 @@ const MainContent = styled.div`
 `
 
 /**
- * @typedef {Object} IndexPageProps
+ * @typedef {Object} HubTemplateProps
  * @property {PageQuery} data
  *
- * @param {IndexPageProps} props
+ * @param {HubTemplateProps} props
  */
-const IndexPage = ({ data }) => {
+const HubTemplate = ({ data }) => {
   return (
     <Layout>
       <Hero
@@ -43,7 +43,7 @@ const IndexPage = ({ data }) => {
   )
 }
 
-export default IndexPage
+export default HubTemplate
 
 /**
  * @typedef {Object} Document
