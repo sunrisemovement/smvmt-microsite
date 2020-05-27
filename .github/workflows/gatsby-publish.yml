@@ -32,31 +32,12 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
-      - name: Cache Gatsby .cache folder
-        uses: actions/cache@v1
-        id: gatsby-cache-folder
-        with:
-          path: ./gatsby-site/.cache
-          key: ${{ runner.os }}-gatsby-site-gatsby-cache
-          restore-keys: |
-            ${{ runner.os }}-gatsby-site-gatsby-cache
-
-      - name: Cache Gatsby public folder
-        uses: actions/cache@v1
-        id: gatsby-public-folder
-        with:
-          path: ./gatsby-site/public
-          key: ${{ runner.os }}-gatsby-site-gatsby-public
-          restore-keys: |
-            ${{ runner.os }}-gatsby-site-gatsby-public
-
       - name: Install NPM dependencies
         run: npm ci
 
       - name: Run Gatsby build
-        run: npm run build -- --log-pages
+        run: npm run build
         env:
-          GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES: true
           NODE_ENV: production
 
       - name: Deploy to GitHub Pages
