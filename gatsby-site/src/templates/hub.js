@@ -23,7 +23,7 @@ const MainContent = styled.div`
  */
 const HubTemplate = ({ data }) => {
   return (
-    <Layout>
+    <Layout hubName={data.hub.name}>
       <Hero
         dense
         hubName={data.hub.name}
