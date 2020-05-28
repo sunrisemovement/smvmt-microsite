@@ -22,8 +22,13 @@ const MainContent = styled.div`
  * @param {HubTemplateProps} props
  */
 const HubTemplate = ({ data }) => {
+  const socialMediaMap = new Map();
+  socialMediaMap.set('facebook', data.hub.facebook);
+  socialMediaMap.set('instagram', data.hub.instagram);
+  socialMediaMap.set('email', data.hub.email);
+
   return (
-    <Layout hubName={data.hub.name}>
+    <Layout hubName={data.hub.name} socialMediaMap={socialMediaMap}>
       <Hero
         dense
         hubName={data.hub.name}
@@ -92,7 +97,11 @@ export const pageQuery = graphql`
     hub(id: { eq: $id }) {
       name
       about
+      email
       website
+      facebook
+      instagram
+
       logo {
         childImageSharp {
           fluid(maxWidth: 28) {

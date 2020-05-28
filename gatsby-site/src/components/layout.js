@@ -13,7 +13,7 @@ import SunriseFooter from "./SunriseFooter"
 import SunriseHeader from "./SunriseHeader"
 import "./layout.css"
 
-const Layout = ({ hubName, children }) => {
+const Layout = ({ hubName, socialMediaMap, children }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -28,7 +28,7 @@ const Layout = ({ hubName, children }) => {
     <>
       <SunriseHeader />
       <main>{children}</main>
-     <SunriseFooter hubName={hubName} />
+      <SunriseFooter hubName={hubName} socialMediaMap={socialMediaMap} />
     </>
   )
 }
