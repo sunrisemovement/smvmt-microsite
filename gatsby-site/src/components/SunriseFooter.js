@@ -85,6 +85,10 @@ const iconForSocialMediaType = (socialMediaType) => {
 }
 
 const SunriseFooter = ({ hubName, socialMediaMap }) => {
+  if (hubName == null || socialMediaMap == null) {
+    return null;
+  }
+  
   const socialMediaComponents = [];
 
   for (const [socialMediaType, link] of socialMediaMap.entries()) {
