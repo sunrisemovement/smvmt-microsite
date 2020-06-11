@@ -56,7 +56,35 @@ const { createRemoteFileNode } = require("gatsby-source-filesystem")
  * @property {Array<Hub>} map_data
  */
 
-const ENDPOINT = "https://sunrise-hub-json-staging.s3.amazonaws.com/hubs.json"
+/**
+ * @typedef {Object} Event
+ * @property {string} address
+ * @property {string} city
+ * @property {string} description
+ * @property {string} end_date
+ * @property {string} event_source
+ * @property {string} event_title
+ * @property {'Phonebank' | 'Canvass' | 'Climate Strike' | 'Rally' | 'Meeting'} event_type
+ * @property {string | undefined} hub_id
+ * @property {number} latitude
+ * @property {number} longitude
+ * @property {string | null} registration_link
+ * @property {string} start_date
+ * @property {string} location_name
+ * @property {string} state
+ * @property {string} zip_code
+ */
+
+/**
+ * @typedef {Object} EventsPayload
+ * @property {Array<Event>} map_data
+ * @property {string} updated_at
+ */
+
+const HUBS_ENDPOINT =
+  "https://sunrise-hub-json-staging.s3.amazonaws.com/hubs.json"
+const EVENTS_ENDPOINT =
+  "https://sunrise-hub-json-staging.s3.amazonaws.com/events.json"
 
 /**
  * @param {import("gatsby").CreatePagesArgs} helpers
@@ -89,26 +117,80 @@ exports.sourceNodes = async helpers => {
   const { actions, createContentDigest, createNodeId, reporter } = helpers
   const { createNode } = actions
 
-  const response = await fetch(ENDPOINT).catch(error => {
+  // EVENTS
+
+  const eventsResponse = await fetch(EVENTS_ENDPOINT).catch(error => {
     reporter.panicOnBuild(
-      `Request to hubhub endpoint ${ENDPOINT} could not send.`,
+      `Request to events endpoint ${EVENTS_ENDPOINT} could not send.`,
       error
     )
     throw error
   })
 
-  if (!response.ok) {
+  if (!eventsResponse.ok) {
     reporter.panicOnBuild(
-      `Request to hubhub endpoint ${ENDPOINT} failed with status code ${response.status}.`
+      `Request to hubhub endpoint ${EVENTS_ENDPOINT} failed with status code ${eventsResponse.status}.`
+    )
+    return
+  }
+
+  /** @type {EventsPayload} */
+  const eventsData = await eventsResponse.json()
+
+  eventsData.map_data
+    .filter(event => Boolean(event.hub_id))
+    .forEach(event => {
+      const eventNodeData = {
+        title: event.event_title,
+        start: new Date(event.start_date).valueOf(),
+        location: event.location_name,
+        infoLink: event.registration_link || null,
+      }
+
+      const eventNodeLinks = {
+        hub___NODE: createNodeId(`Hub-${event.hub_id}`),
+      }
+
+      const contentDigest = createContentDigest({
+        ...eventNodeData,
+        ...eventNodeLinks,
+      })
+
+      const id = createNodeId(`Event-${contentDigest}`)
+
+      createNode({
+        id,
+        ...eventNodeData,
+        ...eventNodeLinks,
+        internal: {
+          contentDigest,
+          type: "Event",
+        },
+      })
+    })
+
+  // HUBS
+
+  const hubsResponse = await fetch(HUBS_ENDPOINT).catch(error => {
+    reporter.panicOnBuild(
+      `Request to hubhub endpoint ${HUBS_ENDPOINT} could not send.`,
+      error
+    )
+    throw error
+  })
+
+  if (!hubsResponse.ok) {
+    reporter.panicOnBuild(
+      `Request to hubhub endpoint ${HUBS_ENDPOINT} failed with status code ${hubsResponse.status}.`
     )
     return
   }
 
   /** @type {HubhubPayload} */
-  const data = await response.json()
+  const hubsData = await hubsResponse.json()
 
   await Promise.all(
-    data.map_data.map(async hub => {
+    hubsData.map_data.map(async hub => {
       const name = parseName(hub.name)
 
       const hubNodeData = {
@@ -180,6 +262,15 @@ exports.createSchemaCustomization = ({ actions }) => {
       logo: File @link(from: "logo___NODE")
       documents: [File!]! @link(from: "documents___NODE")
       images: [File!]! @link(from: "images___NODE")
+    }
+
+    type Event implements Node {
+      id: ID!
+      title: String!
+      start: Int!
+      location: String!
+      infoLink: String
+      hub: Hub!
     }
   `
   createTypes(typeDefs)
