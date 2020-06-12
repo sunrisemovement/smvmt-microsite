@@ -13,7 +13,7 @@ const Heading = styled.h2`
   line-height: 1.25;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--sunrise-gray);
+  color: var(--sunrise-grey);
   padding-bottom: 20px;
   margin: 0;
 `

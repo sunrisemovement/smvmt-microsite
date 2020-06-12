@@ -1,0 +1,101 @@
+.container {
+  color: rgba(255,255,255,0.87);
+  background-color: var(--sunrise-grey);
+  padding: 30px;
+}
+  
+  .container :global(.can_embed.form #can_embed_form_inner h2) {
+    color: rgba(255,255,255,0.87);
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 28px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0;
+    margin-bottom: 40px;
+    border-bottom: none;
+  }
+
+  .container :global(#can_embed_form_inner h4) {
+    display: none;
+  }
+
+  .container :global(#can_embed_form_inner .floatlabel-label) {
+    display: none !important;
+  }
+
+  .container :global(#can_embed_form input[type="email"]),
+  .container :global(#can_embed_form input[type="text"]),
+  .container :global(#can_embed_form input[type="number"]) {
+    font-weight: bold;
+    padding: 12px 8px;
+    height: 56px;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 15px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* .container :global(#can_embed_form.can_float #form_col1) {
+    float: none;
+  } */
+
+  .container :global(#can_embed_form_inner #mobile_opt_in) {
+    padding-top: 20px;
+  }
+
+  .container :global(#can_embed_form:not(.full) #action_info) {
+    margin-top: 20px;
+  }
+
+  /* .container :global(#can_embed_form form li.control-group:last-child .check_radio_field) {
+    margin-bottom: 0;
+  } */
+
+  .container :global(#can_embed_form input[type="submit"]) {
+    background: var(--sunrise-yellow);
+    border: 1px solid var(--sunrise-grey);
+    color: var(--sunrise-grey);
+    height: inherit;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    padding-left: 20px;
+    padding-right: 20px;
+    transition: none;
+  }
+  
+  .container :global(#can_embed_form input[type="submit"]:hover) {
+    background: var(--sunrise-yellow);
+    color: var(--sunrise-grey);
+  }
+  
+  .container :global(#can_embed_form a) {
+    color: var(--color-green);
+    text-decoration: underline;
+  }
+
+  .container :global(#can_embed_form #d_sharing) {
+    border-top: 0;
+  }
+
+  .container :global(#can_embed_form #d_sharing label) {
+    font-size: 14px;
+  }
+
+  .container :global(#can_embed_form span.can_select) {
+    color: var(--sunrise-grey);
+    height: 56px;
+    background-position-y: 16px;
+  }
+
+  .container :global(#can_embed_form .can_select span.can_selectInner) {
+    height: 56px;
+    line-height: 56px;
+  }

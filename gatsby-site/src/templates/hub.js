@@ -4,6 +4,7 @@ import Layout from "../components/layout"
 import Hero from "../components/Hero"
 import About from "../components/About"
 import Documents from "../components/Documents"
+import Newsletter from "../components/Newsletter"
 import { graphql } from "gatsby"
 
 const MainContent = styled.div`
@@ -22,11 +23,12 @@ const MainContent = styled.div`
  * @param {HubTemplateProps} props
  */
 const HubTemplate = ({ data }) => {
-  const socialMediaMap = new Map();
-  socialMediaMap.set('facebook', data.hub.facebook);
-  socialMediaMap.set('instagram', data.hub.instagram);
-  socialMediaMap.set('email', data.hub.email);
+  const socialMediaMap = new Map()
+  socialMediaMap.set("facebook", data.hub.facebook)
+  socialMediaMap.set("instagram", data.hub.instagram)
+  socialMediaMap.set("email", data.hub.email)
 
+  console.log(data.hub.signup)
   return (
     <Layout hubName={data.hub.name} socialMediaMap={socialMediaMap}>
       <Hero
@@ -43,6 +45,7 @@ const HubTemplate = ({ data }) => {
       <MainContent>
         <About hubName={data.hub.name} content={data.hub.about} />
         <Documents documents={data.hub.documents} />
+        {data.hub.signup && <Newsletter link={data.hub.signup} />}
       </MainContent>
     </Layout>
   )
@@ -61,6 +64,7 @@ export default HubTemplate
  * @property {string} hub.name
  * @property {string} hub.about
  * @property {string | null} hub.website
+ * @property {string | null} hub.signup
  * @property {Object} hub.logo
  * @property {import("gatsby-image").GatsbyImageProps} hub.logo.childImageSharp
  * @property {Object} hub.hero
@@ -101,7 +105,7 @@ export const pageQuery = graphql`
       website
       facebook
       instagram
-
+      signup
       logo {
         childImageSharp {
           fluid(maxWidth: 28) {

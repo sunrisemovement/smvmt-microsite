@@ -70,7 +70,7 @@ const WebsiteLink = styled.a`
   text-align: center;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--sunrise-gray);
+  color: var(--sunrise-grey);
   text-decoration: none;
   height: 68px;
   background-color: var(--sunrise-yellow);
