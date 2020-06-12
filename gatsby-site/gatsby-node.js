@@ -142,7 +142,7 @@ exports.sourceNodes = async helpers => {
     .forEach(event => {
       const eventNodeData = {
         title: event.event_title,
-        start: new Date(event.start_date).valueOf(),
+        start: new Date(event.start_date).toUTCString(),
         location: event.location_name,
         infoLink: event.registration_link || null,
       }
@@ -267,10 +267,10 @@ exports.createSchemaCustomization = ({ actions }) => {
     type Event implements Node {
       id: ID!
       title: String!
-      start: Int!
+      start: String!
       location: String!
       infoLink: String
-      hub: Hub!
+      hub: Hub! @link(from: "hub___NODE")
     }
   `
   createTypes(typeDefs)
