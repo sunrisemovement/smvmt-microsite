@@ -4,6 +4,7 @@ import Layout from "../components/layout"
 import Hero from "../components/Hero"
 import About from "../components/About"
 import Documents from "../components/Documents"
+import Events from "../components/Events"
 import { graphql } from "gatsby"
 
 const MainContent = styled.div`
@@ -22,13 +23,18 @@ const MainContent = styled.div`
  * @param {HubTemplateProps} props
  */
 const HubTemplate = ({ data }) => {
-  const socialMediaMap = new Map();
-  socialMediaMap.set('facebook', data.hub.facebook);
-  socialMediaMap.set('instagram', data.hub.instagram);
-  socialMediaMap.set('email', data.hub.email);
+  console.log(data)
 
   return (
-    <Layout hubName={data.hub.name} socialMediaMap={socialMediaMap}>
+    <Layout
+      hubName={data.hub.name}
+      socialMediaMap={
+        new Map([
+          ["facebook", data.hub.facebook],
+          ["instagram", data.hub.instagram],
+          ["email", data.hub.email],
+        ])
+      }>
       <Hero
         dense
         hubName={data.hub.name}
@@ -42,6 +48,7 @@ const HubTemplate = ({ data }) => {
       />
       <MainContent>
         <About hubName={data.hub.name} content={data.hub.about} />
+        {data.events.nodes.length && <Events events={data.events.nodes} />}
         <Documents documents={data.hub.documents} />
       </MainContent>
     </Layout>
@@ -51,21 +58,36 @@ const HubTemplate = ({ data }) => {
 export default HubTemplate
 
 /**
- * @typedef {Object} Document
+ * @typedef {Object} DocumentQuery
  * @property {string} id
  * @property {string} name
  * @property {string} publicURL
  *
+ * @typedef {Object} HubQuery
+ * @property {string} name
+ * @property {string} about
+ * @property {string} email
+ * @property {string | null} facebook
+ * @property {string | null} instagram
+ * @property {string | null} twitter
+ * @property {string | null} website
+ * @property {Object} logo
+ * @property {import("gatsby-image").GatsbyImageProps} logo.childImageSharp
+ * @property {Object} hero
+ * @property {import("gatsby-image").GatsbyImageProps} hero.childImageSharp
+ * @property {Array<DocumentQuery>} documents
+ *
+ * @typedef {Object} EventQuery
+ * @property {string} id
+ * @property {string} location
+ * @property {string} title
+ * @property {string} start
+ * @property {string | null} infoLink
+ *
  * @typedef {Object} PageQuery
- * @property {Object} hub
- * @property {string} hub.name
- * @property {string} hub.about
- * @property {string | null} hub.website
- * @property {Object} hub.logo
- * @property {import("gatsby-image").GatsbyImageProps} hub.logo.childImageSharp
- * @property {Object} hub.hero
- * @property {import("gatsby-image").GatsbyImageProps} hub.hero.childImageSharp
- * @property {Array<Document>} hub.documents
+ * @property {HubQuery} hub
+ * @property {Object} events
+ * @property {Array<EventQuery>} events.nodes
  * @property {Object} defaultLogo
  * @property {import("gatsby-image").GatsbyImageProps} defaultLogo.childImageSharp
  * @property {Object} defaultHero
@@ -92,6 +114,15 @@ export const pageQuery = graphql`
         fluid(maxWidth: 1440) {
           ...GatsbyImageSharpFluid
         }
+      }
+    }
+    events: allEvent(filter: { hub: { id: { eq: $id } } }) {
+      nodes {
+        id
+        location
+        title
+        start
+        infoLink
       }
     }
     hub(id: { eq: $id }) {
