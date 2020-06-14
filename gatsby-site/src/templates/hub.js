@@ -27,6 +27,7 @@ const HubTemplate = ({ data }) => {
   return (
     <Layout
       hubName={data.hub.name}
+      donations={data.hub.donations}
       socialMediaMap={
         new Map([
           ["facebook", data.hub.facebook],
@@ -72,6 +73,7 @@ export default HubTemplate
  * @property {string | null} instagram
  * @property {string | null} twitter
  * @property {string | null} website
+ * @property {string | null} donations
  * @property {Object} logo
  * @property {import("gatsby-image").GatsbyImageProps} logo.childImageSharp
  * @property {Object} hero
@@ -134,6 +136,7 @@ export const pageQuery = graphql`
       facebook
       instagram
       signup
+      donations
       logo {
         childImageSharp {
           fluid(maxWidth: 28) {

@@ -10,8 +10,7 @@ const Container = styled.div`
   width: 100%;
   background-color: var(--sunrise-grey);
   height: inherit;
-  padding-top: 35px;
-  padding-bottom: 35px;
+  padding: 80px 32px;
   align-items: center;
 `
 
@@ -29,6 +28,7 @@ const SocialLinksLabel = styled.div`
 const SocialMediaContainer = styled.div`
   display: flex;
   flex-direction: row;
+  margin-bottom: 64px;
 `
 
 const ImageCircle = styled.a`
@@ -45,6 +45,10 @@ const ImageCircle = styled.a`
 const ImageStyle = styled.div`
   width: 17px;
   height: 17px;
+`
+
+const DonationLink = styled.div`
+  margin-bottom: 64px;
 `
 
 const igIcon = (
@@ -118,7 +122,21 @@ const iconForSocialMediaType = socialMediaType => {
   return null
 }
 
-const SunriseFooter = ({ hubName, socialMediaMap }) => {
+const BackToNationalLink = styled.a`
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  justify-self: flex-end;
+  color: var(--sunrise-yellow);
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+`
+
+const SunriseFooter = ({ hubName, socialMediaMap, donationLink }) => {
   if (hubName == null || socialMediaMap == null) {
     return null
   }
@@ -130,26 +148,31 @@ const SunriseFooter = ({ hubName, socialMediaMap }) => {
       continue
     }
     socialMediaComponents.push(
-      <div key={socialMediaType}>
-        <ImageCircle href={link} key={socialMediaType}>
-          <ImageStyle>{iconForSocialMediaType(socialMediaType)}</ImageStyle>
-        </ImageCircle>
-      </div>
+      <ImageCircle href={link} key={socialMediaType}>
+        <ImageStyle>{iconForSocialMediaType(socialMediaType)}</ImageStyle>
+      </ImageCircle>
     )
   }
 
   return (
     <Container>
-      <Button
-        label={`Donate to Sunrise ${hubName}`}
-        href="https://secure.actblue.com/donate/sunrisemvmt"
-      />
+      {donationLink && (
+        <DonationLink>
+          <Button
+            label={`Donate to Sunrise ${hubName}`}
+            href="https://secure.actblue.com/donate/sunrisemvmt"
+          />
+        </DonationLink>
+      )}
       {socialMediaComponents.length === 0 ? null : (
         <>
           <SocialLinksLabel>{`Sunrise ${hubName} Social Links`}</SocialLinksLabel>
           <SocialMediaContainer>{socialMediaComponents}</SocialMediaContainer>
         </>
       )}
+      <BackToNationalLink href="https://www.sunrisemovement.org">
+        Back to Sunrise National
+      </BackToNationalLink>
     </Container>
   )
 }

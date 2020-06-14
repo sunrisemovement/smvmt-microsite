@@ -43,6 +43,7 @@ const { createRemoteFileNode } = require("gatsby-source-filesystem")
  * @property {string | null} instagram
  * @property {string | null} twitter
  * @property {string | null} signup_link
+ * @property {string | null} donation_link
  * @property {Array<HubLeader>} leaders
  * @property {Array<RemoteFile> | null | undefined} documents
  * @property {Array<RemoteFile> | null | undefined} images
@@ -202,6 +203,7 @@ exports.sourceNodes = async helpers => {
         facebook: hub.facebook,
         instagram: hub.instagram,
         twitter: hub.twitter,
+        donations: hub.donation_link,
         signup: hub.signup_link || null,
       }
 
@@ -260,6 +262,7 @@ exports.createSchemaCustomization = ({ actions }) => {
       instagram: String
       twitter: String
       signup: String
+      donations: String
       hero: File @link(from: "hero___NODE")
       logo: File @link(from: "logo___NODE")
       documents: [File!]! @link(from: "documents___NODE")
