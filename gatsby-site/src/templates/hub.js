@@ -39,6 +39,7 @@ const HubTemplate = ({ data }) => {
       donations={data.hub.donations}
       socialMediaMap={
         new Map([
+          ["twitter", data.hub.twitter],
           ["facebook", data.hub.facebook],
           ["instagram", data.hub.instagram],
           ["email", data.hub.email],
@@ -146,6 +147,7 @@ export const pageQuery = graphql`
       about
       email
       website
+      twitter
       facebook
       instagram
       signup

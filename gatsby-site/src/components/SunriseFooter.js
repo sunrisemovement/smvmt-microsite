@@ -51,6 +51,9 @@ const DonationLink = styled.div`
   margin-bottom: 64px;
 `
 
+// TODO NEED ICON
+const twIcon = null;
+
 const igIcon = (
   <svg
     width="36"
@@ -111,6 +114,8 @@ const emailIcon = (
 
 const iconForSocialMediaType = socialMediaType => {
   switch (socialMediaType) {
+    case "twitter":
+      return twIcon
     case "facebook":
       return fbIcon
     case "instagram":
