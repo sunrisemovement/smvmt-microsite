@@ -37,6 +37,7 @@ const { createRemoteFileNode } = require("gatsby-source-filesystem")
  * @property {string} city
  * @property {string} state
  * @property {string} email
+ * @property {string} url_slug
  * @property {string | null} custom_weblink_text
  * @property {string | null} website
  * @property {string | null} facebook
@@ -198,7 +199,7 @@ exports.sourceNodes = async helpers => {
 
       const hubNodeData = {
         name,
-        slug: slugFromName(name),
+        slug: hub.url_slug,
         about: hub.about || "",
         email: hub.email,
         website: hub.website,
@@ -304,12 +305,4 @@ const fileNodeFromRemoteFile = async (helpers, remoteFile) => {
  */
 const parseName = input => {
   return input.replace(/sunrise(\s+movement)?/i, "").trim()
-}
-
-/**
- * @param {string} input
- * @returns {string}
- */
-const slugFromName = input => {
-  return input.toLowerCase().replace(/\s+/g, "-")
 }
