@@ -83,8 +83,10 @@ const { createRemoteFileNode } = require("gatsby-source-filesystem")
  */
 
 const HUBS_ENDPOINT =
+  process.env.HUBS_ENDPOINT ||
   "https://sunrise-hub-json-staging.s3.amazonaws.com/hubs.json"
 const EVENTS_ENDPOINT =
+  process.env.EVENTS_ENDPOINT ||
   "https://sunrise-hub-json-staging.s3.amazonaws.com/events.json"
 
 /**
