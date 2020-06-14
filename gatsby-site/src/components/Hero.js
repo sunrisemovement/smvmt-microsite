@@ -2,6 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import Image from "gatsby-image"
 import styled from "styled-components"
+import Button from "./Button"
 
 const Section = styled.section`
   position: relative;
@@ -59,23 +60,10 @@ const Headline = styled.h1`
   text-transform: uppercase;
   color: var(--sunrise-yellow);
   margin: 0;
+  text-align: center;
 `
 
-const WebsiteLink = styled.a`
-  font-family: Source Sans Pro;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 20px;
-  text-align: center;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--sunrise-grey);
-  text-decoration: none;
-  height: 68px;
-  background-color: var(--sunrise-yellow);
-  display: flex;
-  align-items: center;
+const WebsiteLink = styled.div`
   padding: 0 40px;
   margin-top: 32px;
 `
@@ -100,8 +88,11 @@ const Hero = ({ dense, background, hubLogo, hubName, hubWebsite }) => {
         </LogoContainer>
         <Headline>Sunrise Movement {hubName}</Headline>
         {hubWebsite && (
-          <WebsiteLink href={hubWebsite}>
-            Visit Sunrise {hubName}’s full website
+          <WebsiteLink>
+            <Button
+              href={hubWebsite}
+              label={`Visit Sunrise ${hubName}’s full website`}
+            />
           </WebsiteLink>
         )}
       </Content>
