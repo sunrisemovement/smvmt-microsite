@@ -71,7 +71,6 @@ export default ({ link }) => {
     const url = new URL(link)
     if (url.hostname !== "actionnetwork.org") return null
     const [type, actionId] = url.pathname.split("/").filter(x => x)
-    console.log(type)
     if (type !== "forms" || !actionId) return null
     return actionId
   }, [link])

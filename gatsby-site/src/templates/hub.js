@@ -27,8 +27,6 @@ const HubTemplate = ({ data }) => {
   socialMediaMap.set("facebook", data.hub.facebook)
   socialMediaMap.set("instagram", data.hub.instagram)
   socialMediaMap.set("email", data.hub.email)
-
-  console.log(data.hub.signup)
   return (
     <Layout hubName={data.hub.name} socialMediaMap={socialMediaMap}>
       <Hero
