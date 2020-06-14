@@ -24,6 +24,15 @@ const MainContent = styled.div`
  * @param {HubTemplateProps} props
  */
 const HubTemplate = ({ data }) => {
+  const hasContent = React.useMemo(() => {
+    return (
+      data.hub.documents.length !== 0 ||
+      data.events.nodes.length !== 0 ||
+      Boolean(data.hub.signup) ||
+      Boolean(data.hub.about)
+    )
+  }, [data])
+
   return (
     <Layout
       hubName={data.hub.name}
@@ -36,7 +45,7 @@ const HubTemplate = ({ data }) => {
         ])
       }>
       <Hero
-        dense
+        dense={hasContent}
         hubName={data.hub.name}
         hubWebsite={data.hub.website}
         background={
@@ -46,12 +55,16 @@ const HubTemplate = ({ data }) => {
           data.hub.logo?.childImageSharp ?? data.defaultLogo.childImageSharp
         }
       />
-      <MainContent>
-        <About hubName={data.hub.name} content={data.hub.about} />
-        {data.events.nodes.length && <Events events={data.events.nodes} />}
-        <Documents documents={data.hub.documents} />
-        {data.hub.signup && <Newsletter link={data.hub.signup} />}
-      </MainContent>
+      {hasContent && (
+        <MainContent>
+          <About hubName={data.hub.name} content={data.hub.about} />
+          {data.events.nodes.length && <Events events={data.events.nodes} />}
+          {data.hub.documents.length && (
+            <Documents documents={data.hub.documents} />
+          )}
+          {data.hub.signup && <Newsletter link={data.hub.signup} />}
+        </MainContent>
+      )}
     </Layout>
   )
 }
