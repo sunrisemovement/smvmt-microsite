@@ -5,6 +5,7 @@ import Hero from "../components/Hero"
 import About from "../components/About"
 import Documents from "../components/Documents"
 import Events from "../components/Events"
+import Newsletter from "../components/Newsletter"
 import { graphql } from "gatsby"
 
 const MainContent = styled.div`
@@ -23,8 +24,6 @@ const MainContent = styled.div`
  * @param {HubTemplateProps} props
  */
 const HubTemplate = ({ data }) => {
-  console.log(data)
-
   return (
     <Layout
       hubName={data.hub.name}
@@ -50,6 +49,7 @@ const HubTemplate = ({ data }) => {
         <About hubName={data.hub.name} content={data.hub.about} />
         {data.events.nodes.length && <Events events={data.events.nodes} />}
         <Documents documents={data.hub.documents} />
+        {data.hub.signup && <Newsletter link={data.hub.signup} />}
       </MainContent>
     </Layout>
   )
@@ -67,6 +67,7 @@ export default HubTemplate
  * @property {string} name
  * @property {string} about
  * @property {string} email
+ * @property {string | null} hub.signup
  * @property {string | null} facebook
  * @property {string | null} instagram
  * @property {string | null} twitter
@@ -132,7 +133,7 @@ export const pageQuery = graphql`
       website
       facebook
       instagram
-
+      signup
       logo {
         childImageSharp {
           fluid(maxWidth: 28) {

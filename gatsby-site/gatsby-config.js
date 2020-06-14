@@ -33,7 +33,10 @@ module.exports = {
         fonts: [
           {
             family: `Source Sans Pro`,
-            variants: [`700`],
+            variants: ["500", "700"],
+          },
+          {
+            family: "Source Serif Pro",
           },
         ],
       },
