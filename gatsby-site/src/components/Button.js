@@ -1,12 +1,12 @@
 import React from "react"
-import styled from 'styled-components';
+import styled from "styled-components"
 
-import './global.css'
+import "./global.css"
 
 const Container = styled.a`
   background: var(--sunrise-yellow);
-  border: 1px solid var(--sunrise-grey);
-  color: var(--sunrise-gray);
+  color: var(--sunrise-grey);
+  display: inline-block;
   height: inherit;
   text-align: center;
   font-size: 16px;
@@ -18,14 +18,14 @@ const Container = styled.a`
   padding-bottom: 14px;
   padding-left: 20px;
   padding-right: 20px;
-`;
+`
 
 const Button = ({ label, href }) => {
-  return <Container
-      target="_blank"
-      href={href}>
+  return (
+    <Container target="_blank" href={href}>
       <span>{label}</span>
-    </Container>;
+    </Container>
+  )
 }
 
-export default Button;
+export default Button

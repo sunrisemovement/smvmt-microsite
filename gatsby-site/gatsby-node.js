@@ -120,6 +120,7 @@ exports.sourceNodes = async helpers => {
         facebook: hub.facebook,
         instagram: hub.instagram,
         twitter: hub.twitter,
+        signup: hub.signup_link || null,
       }
 
       const hubNodeLinks = {
@@ -176,6 +177,7 @@ exports.createSchemaCustomization = ({ actions }) => {
       facebook: String
       instagram: String
       twitter: String
+      signup: String
       hero: File @link(from: "hero___NODE")
       logo: File @link(from: "logo___NODE")
       documents: [File!]! @link(from: "documents___NODE")

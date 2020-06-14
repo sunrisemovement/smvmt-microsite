@@ -21,7 +21,7 @@ const DownloadLink = styled.a`
   line-height: 15px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--sunrise-gray);
+  color: var(--sunrise-grey);
   fill: currentColor;
   stroke: currentColor;
   background-color: var(--sunrise-tan);
