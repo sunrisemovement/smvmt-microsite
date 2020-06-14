@@ -8,6 +8,10 @@ const Layout = styled.div`
   grid-auto-flow: column;
   grid-row-gap: 20px;
   grid-column-gap: 20px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 `
 
 const Entry = styled.article`

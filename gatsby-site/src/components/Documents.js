@@ -8,6 +8,9 @@ const Grid = styled.div`
   grid-row-gap: 20px;
   grid-template-columns: 1fr 1fr;
   grid-auto-flow: dense;
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 `
 
 const DownloadLink = styled.a`
