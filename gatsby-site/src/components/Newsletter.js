@@ -67,24 +67,14 @@ const ActionNetwork = ({ actionId }) => {
 }
 
 export default ({ link }) => {
-  const url = React.useMemo(() => {
-    return new URL(link)
-  }, [link])
-
   const actionNetworkActionId = React.useMemo(() => {
+    const url = new URL(link)
     if (url.hostname !== "actionnetwork.org") return null
     const [type, actionId] = url.pathname.split("/").filter(x => x)
     console.log(type)
     if (type !== "forms" || !actionId) return null
     return actionId
-  }, [url])
-
-  const apexDomain = React.useMemo(() => {
-    return url.host
-      .split(".")
-      .slice(-2)
-      .join(".")
-  }, [url])
+  }, [link])
 
   if (actionNetworkActionId) {
     return (
@@ -97,7 +87,7 @@ export default ({ link }) => {
   return (
     <Section id="newsletter" title="Newsletter Sign Up">
       <LinkContainer>
-        <Button label={`Sign up at ${apexDomain}`} href={link} />
+        <Button label="Sign up here" href={link} />
       </LinkContainer>
     </Section>
   )
