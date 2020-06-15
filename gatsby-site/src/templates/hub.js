@@ -95,7 +95,7 @@ export default HubTemplate
  *
  * @typedef {Object} EventQuery
  * @property {string} id
- * @property {string} location
+ * @property {string | null} location
  * @property {string} title
  * @property {string} start
  * @property {string | null} infoLink

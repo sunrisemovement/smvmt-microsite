@@ -80,7 +80,7 @@ const formatDateForSemantics = input => {
 /**
  * @typedef {Object} EventData
  * @property {string} id
- * @property {string} location
+ * @property {string | null} location
  * @property {string} title
  * @property {string} start
  * @property {string | null} infoLink
@@ -100,7 +100,7 @@ export default ({ events }) => {
             <StartDate dateTime={formatDateForSemantics(event.start)}>
               {formatDateForDisplay(event.start)}
             </StartDate>
-            <Location>{event.location}</Location>
+            {event.location && <Location>{event.location}</Location>}
             {event.infoLink && (
               <InfoLink href={event.infoLink} rel="bookmark">
                 More info
