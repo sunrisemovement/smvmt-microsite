@@ -80,7 +80,7 @@ export default HubTemplate
  * @typedef {Object} HubQuery
  * @property {string} name
  * @property {string} about
- * @property {string} email
+ * @property {string | null} email
  * @property {string | null} hub.signup
  * @property {string | null} facebook
  * @property {string | null} instagram

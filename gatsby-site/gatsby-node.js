@@ -36,8 +36,8 @@ const { createRemoteFileNode } = require("gatsby-source-filesystem")
  * @property {string} about
  * @property {string} city
  * @property {string} state
- * @property {string} email
  * @property {string} url_slug
+ * @property {string | null} email
  * @property {string | null} custom_weblink_text
  * @property {string | null} website
  * @property {string | null} facebook
@@ -259,7 +259,7 @@ exports.createSchemaCustomization = ({ actions }) => {
       name: String!
       slug: String!
       about: String!
-      email: String!
+      email: String
       website: String
       facebook: String
       instagram: String
