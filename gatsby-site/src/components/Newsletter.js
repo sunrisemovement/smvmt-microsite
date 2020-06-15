@@ -68,20 +68,20 @@ const ActionNetwork = ({ actionId, type }) => {
 }
 
 export default ({ link }) => {
-  const [actionNetworkActionId, actionNetworkType] = React.useMemo(() => {
+  const actionNetwork = React.useMemo(() => {
     const url = new URL(link)
     if (url.hostname !== "actionnetwork.org") return null
     const [type, actionId] = url.pathname.split("/").filter(x => x)
     if ((type !== "forms" && type !== "events") || !actionId) return null
-    return [actionId, type.substring(0, type.length - 1)]
+    return { actionId, type: type.substring(0, type.length - 1) }
   }, [link])
 
-  if (actionNetworkActionId) {
+  if (actionNetwork) {
     return (
       <Section id="newsletter" title="Newsletter Sign Up">
         <ActionNetwork
-          actionId={actionNetworkActionId}
-          type={actionNetworkType}
+          actionId={actionNetwork.actionId}
+          type={actionNetwork.type}
         />
       </Section>
     )
