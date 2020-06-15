@@ -57,9 +57,13 @@ const HubTemplate = ({ data }) => {
       />
       {hasContent && (
         <MainContent>
-          <About hubName={data.hub.name} content={data.hub.about} />
-          {data.events.nodes.length && <Events events={data.events.nodes} />}
-          {data.hub.documents.length && (
+          {data.hub.about && (
+            <About hubName={data.hub.name} content={data.hub.about} />
+          )}
+          {data.events.nodes.length !== 0 && (
+            <Events events={data.events.nodes} />
+          )}
+          {data.hub.documents.length !== 0 && (
             <Documents documents={data.hub.documents} />
           )}
           {data.hub.signup && <Newsletter link={data.hub.signup} />}

@@ -67,13 +67,19 @@ const ActionNetwork = ({ actionId }) => {
 }
 
 export default ({ link }) => {
+  const cleanedLink = React.useMemo(() => {
+    let cleaned = link
+    if (!link.startsWith("http")) cleaned = "https://" + cleaned
+    return cleaned
+  }, [link])
+
   const actionNetworkActionId = React.useMemo(() => {
-    const url = new URL(link)
+    const url = new URL(cleanedLink)
     if (url.hostname !== "actionnetwork.org") return null
     const [type, actionId] = url.pathname.split("/").filter(x => x)
     if (type !== "forms" || !actionId) return null
     return actionId
-  }, [link])
+  }, [cleanedLink])
 
   if (actionNetworkActionId) {
     return (
