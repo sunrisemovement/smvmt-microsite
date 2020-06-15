@@ -12,7 +12,7 @@ const LinkContainer = styled.div`
   padding-top: 20px;
 `
 
-const ActionNetwork = ({ actionId }) => {
+const ActionNetwork = ({ actionId, type }) => {
   const container = React.useRef()
 
   const onInput = React.useCallback(event => {
@@ -35,16 +35,17 @@ const ActionNetwork = ({ actionId }) => {
   React.useEffect(() => {
     if (!container.current) return
     let inner
+    const cacheKey = `${type}-${actionId}`
     if (actionNetworkCache.has(actionId)) {
-      inner = actionNetworkCache.get(actionId)
+      inner = actionNetworkCache.get(cacheKey)
       container.current.appendChild(inner)
     } else {
       inner = document.createElement("div")
       inner.innerHTML = `
-        <div id="can-form-area-${actionId}" style="width: 100%;"></div>
+        <div id="can-${type}-area-${actionId}" style="width: 100%;"></div>
       `
       const script = document.createElement("script")
-      script.src = `https://actionnetwork.org/widgets/v3/form/${actionId}?format=js&source=widget`
+      script.src = `https://actionnetwork.org/widgets/v3/${type}/${actionId}?format=js&source=widget`
       inner.appendChild(script)
       const styles = document.createElement("link")
       styles.href =
@@ -58,27 +59,30 @@ const ActionNetwork = ({ actionId }) => {
     return () => {
       inner.removeEventListener("input", onInput)
       inner.removeEventListener("focusout", onBlur)
-      actionNetworkCache.set(actionId, inner)
+      actionNetworkCache.set(cacheKey, inner)
       container.current && container.current.removeChild(inner)
     }
-  }, [actionId])
+  }, [actionId, type])
 
   return <div className={Styles.container} ref={container} />
 }
 
 export default ({ link }) => {
-  const actionNetworkActionId = React.useMemo(() => {
+  const [actionNetworkActionId, actionNetworkType] = React.useMemo(() => {
     const url = new URL(link)
     if (url.hostname !== "actionnetwork.org") return null
     const [type, actionId] = url.pathname.split("/").filter(x => x)
-    if (type !== "forms" || !actionId) return null
-    return actionId
+    if ((type !== "forms" && type !== "events") || !actionId) return null
+    return [actionId, type.substring(0, type.length - 1)]
   }, [link])
 
   if (actionNetworkActionId) {
     return (
       <Section id="newsletter" title="Newsletter Sign Up">
-        <ActionNetwork actionId={actionNetworkActionId} />
+        <ActionNetwork
+          actionId={actionNetworkActionId}
+          type={actionNetworkType}
+        />
       </Section>
     )
   }
