@@ -72,26 +72,31 @@ const WebsiteLink = styled.div`
  * @typedef {Object} HeroProps
  * @property {boolean} dense
  * @property {import("gatsby-image").GatsbyImageProps} background
- * @property {import("gatsby-image").GatsbyImageProps} hubLogo
- * @property {string} hubName
- * @property {string | null} hubWebsite
+ * @property {import("gatsby-image").GatsbyImageProps} logo
+ * @property {string} name
+ * @property {string | null} website
+ * @property {string | null} websiteText
  *
  * @param {HeroProps} props
  */
-const Hero = ({ dense, background, hubLogo, hubName, hubWebsite }) => {
+const Hero = ({ dense, background, logo, name, website, websiteText }) => {
   return (
     <Section>
       <BackgroundImage {...background} style={{ position: "absolute" }} />
       <Content dense={dense}>
         <LogoContainer>
-          <LogoImage {...hubLogo} imgStyle={{ objectFit: "contain" }} />
+          <LogoImage {...logo} imgStyle={{ objectFit: "contain" }} />
         </LogoContainer>
-        <Headline>Sunrise Movement {hubName}</Headline>
-        {hubWebsite && (
+        <Headline>Sunrise Movement {name}</Headline>
+        {website && (
           <WebsiteLink>
             <Button
-              href={hubWebsite}
-              label={`Visit Sunrise ${hubName}’s full website`}
+              href={website}
+              label={
+                websiteText
+                  ? websiteText
+                  : `Visit Sunrise ${name}’s full website`
+              }
             />
           </WebsiteLink>
         )}

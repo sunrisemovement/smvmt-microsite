@@ -1,5 +1,6 @@
 const fetch = require("node-fetch").default
 const path = require("path")
+const url = require("url")
 const { createRemoteFileNode } = require("gatsby-source-filesystem")
 
 /**
@@ -148,7 +149,9 @@ exports.sourceNodes = async helpers => {
         title: event.event_title,
         start: new Date(event.start_date).toUTCString(),
         location: event.location_name,
-        infoLink: event.registration_link || null,
+        infoLink: event.registration_link
+          ? fixLink(event.registration_link)
+          : null,
       }
 
       const eventNodeLinks = {
@@ -202,12 +205,15 @@ exports.sourceNodes = async helpers => {
         slug: hub.url_slug,
         about: hub.about || "",
         email: hub.email,
-        website: hub.website,
+        website: hub.website ? fixLink(hub.website) : null,
+        websiteText: hub.custom_weblink_text
+          ? fixLink(hub.custom_weblink_text)
+          : null,
         facebook: hub.facebook,
         instagram: hub.instagram,
         twitter: hub.twitter,
-        donations: hub.donation_link,
-        signup: hub.signup_link || null,
+        donations: hub.donation_link ? fixLink(hub.donation_link) : null,
+        signup: hub.signup_link ? fixLink(hub.signup_link) : null,
       }
 
       const hubNodeLinks = {
@@ -261,6 +267,7 @@ exports.createSchemaCustomization = ({ actions }) => {
       about: String!
       email: String
       website: String
+      websiteText: String
       facebook: String
       instagram: String
       twitter: String
@@ -305,4 +312,11 @@ const fileNodeFromRemoteFile = async (helpers, remoteFile) => {
  */
 const parseName = input => {
   return input.replace(/sunrise(\s+movement)?/i, "").trim()
+}
+
+const fixLink = input => {
+  const fixed = url.parse(input)
+  fixed.slashes = true
+  if (!fixed.protocol) fixed.protocol = "https:"
+  return url.format(fixed)
 }

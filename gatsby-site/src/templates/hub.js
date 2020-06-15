@@ -46,12 +46,13 @@ const HubTemplate = ({ data }) => {
       }>
       <Hero
         dense={hasContent}
-        hubName={data.hub.name}
-        hubWebsite={data.hub.website}
+        name={data.hub.name}
+        website={data.hub.website}
+        websiteText={data.hub.websiteText}
         background={
           data.hub.hero?.childImageSharp ?? data.defaultHero.childImageSharp
         }
-        hubLogo={
+        logo={
           data.hub.logo?.childImageSharp ?? data.defaultLogo.childImageSharp
         }
       />
@@ -91,6 +92,7 @@ export default HubTemplate
  * @property {string | null} twitter
  * @property {string | null} website
  * @property {string | null} donations
+ * @property {string | null} websiteText
  * @property {Object} logo
  * @property {import("gatsby-image").GatsbyImageProps} logo.childImageSharp
  * @property {Object} hero
@@ -154,6 +156,7 @@ export const pageQuery = graphql`
       instagram
       signup
       donations
+      websiteText
       logo {
         childImageSharp {
           fluid(maxWidth: 28) {
