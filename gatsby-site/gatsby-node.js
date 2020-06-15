@@ -207,7 +207,7 @@ exports.sourceNodes = async helpers => {
         email: hub.email,
         website: hub.website ? fixLink(hub.website) : null,
         websiteText: hub.custom_weblink_text
-          ? fixLink(hub.custom_weblink_text)
+          ? fixWebsiteText(hub.custom_weblink_text)
           : null,
         facebook: hub.facebook,
         instagram: hub.instagram,
@@ -319,4 +319,16 @@ const fixLink = input => {
   fixed.slashes = true
   if (!fixed.protocol) fixed.protocol = "https:"
   return url.format(fixed)
+}
+
+/**
+ * If the website text is an actual URL we'll just use the default button text
+ */
+const fixWebsiteText = input => {
+  try {
+    const url = new URL(input)
+    return null
+  } catch {
+    return input
+  }
 }
