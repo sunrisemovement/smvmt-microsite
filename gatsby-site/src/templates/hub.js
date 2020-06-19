@@ -41,7 +41,7 @@ const HubTemplate = ({ data }) => {
         new Map([
           ["facebook", data.hub.facebook],
           ["instagram", data.hub.instagram],
-          ["email", data.hub.email],
+          ["email", data.hub.email ? `mailto:${data.hub.email}` : null],
         ])
       }>
       <Hero
