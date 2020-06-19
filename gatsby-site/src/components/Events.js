@@ -8,6 +8,7 @@ const Layout = styled.div`
   grid-auto-flow: column;
   grid-row-gap: 20px;
   grid-column-gap: 20px;
+  overflow-x: scroll;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -58,6 +59,7 @@ const InfoLink = styled.a`
   padding: 10px 28px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  white-space: nowrap;
 `
 
 const formatDateForDisplay = input => {
