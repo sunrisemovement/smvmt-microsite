@@ -5,7 +5,7 @@ import styled from "styled-components"
 const Layout = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-auto-flow: column;
+  grid-auto-flow: dense;
   grid-row-gap: 20px;
   grid-column-gap: 20px;
   overflow-x: scroll;
@@ -19,6 +19,10 @@ const Entry = styled.article`
   background-color: var(--sunrise-tan);
   color: var(--sunrise-gray);
   padding: 30px;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr auto;
+  grid-auto-flow: row;
+  justify-items: start;
 `
 
 const Title = styled.h3`
@@ -60,6 +64,8 @@ const InfoLink = styled.a`
   letter-spacing: 0.14em;
   text-transform: uppercase;
   white-space: nowrap;
+  grid-row: 5;
+  text-decoration: none;
 `
 
 const formatDateForDisplay = input => {
@@ -104,7 +110,7 @@ export default ({ events }) => {
             </StartDate>
             {event.location && <Location>{event.location}</Location>}
             {event.infoLink && (
-              <InfoLink href={event.infoLink} rel="bookmark">
+              <InfoLink target="_blank" href={event.infoLink} rel="bookmark">
                 More info
               </InfoLink>
             )}
