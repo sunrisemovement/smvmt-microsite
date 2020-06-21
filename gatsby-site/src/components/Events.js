@@ -8,7 +8,6 @@ const Layout = styled.div`
   grid-auto-flow: dense;
   grid-row-gap: 20px;
   grid-column-gap: 20px;
-  overflow-x: scroll;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
