@@ -121,7 +121,7 @@ export const pageQuery = graphql`
   query IndexPage($id: String!) {
     defaultLogo: file(
       sourceInstanceName: { eq: "images" }
-      relativePath: { eq: "sunrise-logo.png" }
+      relativePath: { eq: "sunrise-logo-padded.png" }
     ) {
       childImageSharp {
         fluid(maxWidth: 150) {
