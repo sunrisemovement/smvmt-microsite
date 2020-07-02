@@ -44,12 +44,12 @@ const LogoContainer = styled.div`
   align-items: center;
   justify-content: center;
   margin-bottom: 16px;
-  padding: 6px;
 `
 
 const LogoImage = styled(Image)`
-  width: ${(Math.sqrt(2) / 2) * 100}%;
-  height: ${(Math.sqrt(2) / 2) * 100}%;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
 `
 
 const Headline = styled.h1`

@@ -124,7 +124,7 @@ export const pageQuery = graphql`
       relativePath: { eq: "sunrise-logo.png" }
     ) {
       childImageSharp {
-        fluid(maxWidth: 56) {
+        fluid(maxWidth: 150) {
           ...GatsbyImageSharpFluid
         }
       }
@@ -161,7 +161,7 @@ export const pageQuery = graphql`
       websiteText
       logo {
         childImageSharp {
-          fluid(maxWidth: 56) {
+          fluid(maxWidth: 150) {
             ...GatsbyImageSharpFluid
           }
         }
