@@ -1,17 +1,19 @@
 import React from "react"
-import { useLocation, useNavigate } from "@reach/router"
+import { useLocation, Redirect } from "@reach/router"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
 const NotFoundPage = () => {
   const location = useLocation()
-  const navigate = useNavigate()
 
-  React.useEffect(() => {
-    if (location.pathname.toLowerCase() === location.pathname) return
-    navigate(location.pathname.toLowerCase())
-  }, [location.pathname, navigate])
+  const shouldRedirect = React.useMemo(() => {
+    return location.pathname.toLowerCase() !== location.pathname
+  }, [location.pathname])
+
+  if (shouldRedirect) {
+    return <Redirect to={location.pathname.toLowerCase()} />
+  }
 
   return (
     <div>
