@@ -8,7 +8,7 @@ const NotFoundPage = () => {
   const location = useLocation()
   const navigate = useNavigate()
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     if (location.pathname.toLowerCase() === location.pathname) return
     navigate(location.pathname.toLowerCase())
   }, [location.pathname, navigate])
