@@ -67,14 +67,30 @@ const ActionNetwork = ({ actionId, type }) => {
   return <div className={Styles.container} ref={container} />
 }
 
+/**
+ * @param {{ link: string }} props
+ */
 export default ({ link }) => {
+  const url = React.useMemo(() => {
+    const nonLinkTextRemoved = link
+      .split("http")
+      .slice(1)
+      .join("http")
+      .split(" ")[0]
+    try {
+      return new URL(nonLinkTextRemoved)
+    } catch {
+      return null
+    }
+  }, [link])
+
   const actionNetwork = React.useMemo(() => {
-    const url = new URL(link)
+    if (!url) return null
     if (url.hostname !== "actionnetwork.org") return null
     const [type, actionId] = url.pathname.split("/").filter(x => x)
     if ((type !== "forms" && type !== "events") || !actionId) return null
     return { actionId, type: type.substring(0, type.length - 1) }
-  }, [link])
+  }, [url])
 
   if (actionNetwork) {
     return (
@@ -87,11 +103,15 @@ export default ({ link }) => {
     )
   }
 
-  return (
-    <Section id="newsletter" title="Newsletter Sign Up">
-      <LinkContainer>
-        <Button label="Sign up here" href={link} />
-      </LinkContainer>
-    </Section>
-  )
+  if (url) {
+    return (
+      <Section id="newsletter" title="Newsletter Sign Up">
+        <LinkContainer>
+          <Button label="Sign up here" href={url.href} />
+        </LinkContainer>
+      </Section>
+    )
+  }
+
+  return null
 }
