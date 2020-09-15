@@ -74,7 +74,7 @@ export default ({ link }) => {
   const url = React.useMemo(() => {
     const nonLinkTextRemoved =
       link.split(" ").filter(w => w.startsWith("http"))[0] ?? null
-    if (nonLinkTextRemoved) return null
+    if (!nonLinkTextRemoved) return null
     try {
       return new URL(nonLinkTextRemoved)
     } catch {
