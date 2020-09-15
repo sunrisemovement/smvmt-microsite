@@ -72,11 +72,9 @@ const ActionNetwork = ({ actionId, type }) => {
  */
 export default ({ link }) => {
   const url = React.useMemo(() => {
-    const nonLinkTextRemoved = link
-      .split("http")
-      .slice(1)
-      .join("http")
-      .split(" ")[0]
+    const nonLinkTextRemoved =
+      link.split(" ").filter(w => w.startsWith("http"))[0] ?? null
+    if (nonLinkTextRemoved) return null
     try {
       return new URL(nonLinkTextRemoved)
     } catch {
