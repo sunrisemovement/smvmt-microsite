@@ -315,7 +315,11 @@ const parseName = input => {
 }
 
 const fixLink = input => {
-  const fixed = url.parse(input)
+  const cleanedExtraneousText = input
+    .split(" ")
+    .filter(w => w.startsWith("http"))[0]
+  if (!cleanedExtraneousText) return null
+  const fixed = url.parse(cleanedExtraneousText)
   fixed.slashes = true
   if (!fixed.protocol) fixed.protocol = "https:"
   return url.format(fixed)
