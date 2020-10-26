@@ -107,6 +107,7 @@ exports.createPages = async ({ graphql, actions: { createPage } }) => {
   `)
 
   result.data.allHub.nodes.forEach(({ id, slug }) => {
+    if (!slug) return
     createPage({
       path: slug,
       component: path.resolve(`./src/templates/hub.js`),
@@ -202,7 +203,7 @@ exports.sourceNodes = async helpers => {
 
       const hubNodeData = {
         name,
-        slug: hub.url_slug,
+        slug: handleSlug(hub),
         about: hub.about || "",
         email: hub.email,
         website: hub.website ? fixLink(hub.website) : null,
@@ -289,6 +290,15 @@ exports.createSchemaCustomization = ({ actions }) => {
     }
   `
   createTypes(typeDefs)
+}
+
+/**
+ * @param {Hub} hub 
+ * @returns {string}
+ */
+const handleSlug = (hub) => {
+  if (!hub.url_slug) return parseName(hub.name).toLowerCase().replace(' ', '-')
+  return hub.url_slug
 }
 
 /**
