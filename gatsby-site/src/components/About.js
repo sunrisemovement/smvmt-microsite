@@ -3,6 +3,10 @@ import PropTypes from "prop-types"
 import styled from "styled-components"
 import Section from "./Section"
 
+const containsHtmlTags = (s) => {
+  return s.includes("<") && s.includes(">");
+}
+
 const Body = styled.div`
   font-family: var(--sunrise-font-serif);
   font-style: normal;
@@ -26,18 +30,27 @@ const Paragraph = styled.p`
  * @param {AboutProps} props
  */
 const About = ({ hubName, content }) => {
-  return (
-    <Section id="about" title={`About Sunrise ${hubName}`}>
-      <Body>
-        {content
-          .split(/\n\n+/)
-          .filter(entry => entry)
-          .map((entry, index) => (
-            <Paragraph key={index}>{entry}</Paragraph>
-          ))}
-      </Body>
-    </Section>
-  )
+  if (containsHtmlTags(content)) {
+    return (
+      <Section id="about" title={`About Sunrise ${hubName}`}>
+        <Body dangerouslySetInnerHTML={{__html: content}}>
+        </Body>
+      </Section>
+    )
+  } else {
+    return (
+      <Section id="about" title={`About Sunrise ${hubName}`}>
+        <Body>
+          {content
+            .split(/\n\n+/)
+            .filter(entry => entry)
+            .map((entry, index) => (
+              <Paragraph key={index}>{entry}</Paragraph>
+            ))}
+        </Body>
+      </Section>
+    )
+  }
 }
 
 About.propTypes = {
