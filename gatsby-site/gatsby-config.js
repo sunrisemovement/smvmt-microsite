@@ -28,17 +28,14 @@ module.exports = {
       },
     },
     {
-      resolve: `@el7cosmos/gatsby-plugin-prefetch-google-fonts`,
+      resolve: `gatsby-plugin-web-font-loader`,
       options: {
-        fonts: [
-          {
-            family: `Source Sans Pro`,
-            variants: ["500", "700"],
-          },
-          {
-            family: "Source Serif Pro",
-          },
-        ],
+        google: {
+          families: [
+            'Source Sans Pro:500,700',
+            'Source Serif Pro',
+          ],
+        },
       },
     },
     "gatsby-plugin-styled-components",
