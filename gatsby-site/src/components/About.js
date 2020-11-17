@@ -32,7 +32,7 @@ const Paragraph = styled.p`
 const About = ({ hubName, content }) => {
   if (containsHtmlTags(content)) {
     return (
-      <Section id="about" title={`About Sunrise ${hubName}`}>
+      <Section id="about" title={`About Sunrise ${hubName}`} style="overflow: visible;">
         <Body dangerouslySetInnerHTML={{__html: content}}>
         </Body>
       </Section>
