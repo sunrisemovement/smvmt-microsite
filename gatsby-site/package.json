@@ -45,5 +45,8 @@
   },
   "bugs": {
     "url": "https://github.com/gatsbyjs/gatsby/issues"
-  }
+  },
+"overrides": {
+      "sharp": "0.33.5"
+    }
 }
