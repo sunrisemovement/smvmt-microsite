@@ -1,12 +1,13 @@
 name: Gatsby Publish
 
 on:
+  pull_request:
+    - master
   schedule:
     - cron: "*/30 * * * *"
   push:
     branches:
       - master
-      - "fix/events"
   repository_dispatch:
     types: deploy
 
