@@ -86,10 +86,10 @@ const { createRemoteFileNode } = require("gatsby-source-filesystem")
 
 const HUBS_ENDPOINT =
   process.env.HUBS_ENDPOINT ||
-  "https://sunrise-hub-json.s3.amazonaws.com/hubs.json"
+  "https://storage.googleapis.com/hub-data/hubs.json"
 const EVENTS_ENDPOINT =
   process.env.EVENTS_ENDPOINT ||
-  "https://sunrise-events.s3.amazonaws.com/events.json"
+  "https://storage.googleapis.com/hub-data/events.json"
 
 /**
  * @param {import("gatsby").CreatePagesArgs} helpers
