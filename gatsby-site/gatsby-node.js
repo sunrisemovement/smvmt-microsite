@@ -46,6 +46,7 @@ const { createRemoteFileNode } = require("gatsby-source-filesystem")
  * @property {string | null} twitter
  * @property {string | null} signup_link
  * @property {string | null} donation_link
+ * @property {boolean | null} take_down_microsite
  * @property {Array<HubLeader>} leaders
  * @property {Array<RemoteFile> | null | undefined} documents
  * @property {Array<RemoteFile> | null | undefined} images
@@ -101,13 +102,15 @@ exports.createPages = async ({ graphql, actions: { createPage } }) => {
         nodes {
           id
           slug
+          takeDownMicrosite
         }
       }
     }
   `)
 
-  result.data.allHub.nodes.forEach(({ id, slug }) => {
-    if (!slug) return
+  result.data.allHub.nodes.forEach(node => {
+    const { id, slug, takeDownMicrosite } = node
+    if (!slug || takeDownMicrosite) return
     createPage({
       path: slug,
       component: path.resolve(`./src/templates/hub.js`),
@@ -215,6 +218,7 @@ exports.sourceNodes = async helpers => {
         twitter: hub.twitter,
         donations: hub.donation_link ? fixLink(hub.donation_link) : null,
         signup: hub.signup_link ? fixLink(hub.signup_link) : null,
+        takeDownMicrosite: hub.take_down_microsite || false,
       }
 
       const hubNodeLinks = {
@@ -293,11 +297,14 @@ exports.createSchemaCustomization = ({ actions }) => {
 }
 
 /**
- * @param {Hub} hub 
+ * @param {Hub} hub
  * @returns {string}
  */
-const handleSlug = (hub) => {
-  if (!hub.url_slug) return parseName(hub.name).toLowerCase().replace(' ', '-')
+const handleSlug = hub => {
+  if (!hub.url_slug)
+    return parseName(hub.name)
+      .toLowerCase()
+      .replace(" ", "-")
   return hub.url_slug
 }
 
